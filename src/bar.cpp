@@ -33,7 +33,7 @@ float Bar::getPixelHeight() const
 void Bar::draw()
 {
     Rectangle rec = {this->coords.getX(), this->coords.getY(), this->getPixelWidth(), this->getPixelHeight()};
-    DrawRectangleRounded(rec, 0.5, 0, this->color);
+    DrawRectangleRounded(rec, 0.40, 0, this->color);
 
 }
 
