@@ -1,4 +1,5 @@
 #include "../headers/bar.hpp"
+#include <iostream>
 
 
 Bar::Bar(ScreenCoords coords, Color color, float pixelWidth, float pixelHeight)
@@ -30,6 +31,10 @@ float Bar::getPixelHeight() const
     return this->pixelHeight;
 }
 
+void Bar::updatePosition(unsigned int FPS){
+    this->shouldMove(FPS);
+}
+
 void Bar::draw()
 {
     Rectangle rec = {this->coords.getX(), this->coords.getY(), this->getPixelWidth(), this->getPixelHeight()};
@@ -37,15 +42,37 @@ void Bar::draw()
 
 }
 
+bool Bar::shouldMove(unsigned int FPS){
 
-void Bar::moveRight()
-{
-    this->coords.setX(this->coords.getX() + 1);
+
+    if(IsKeyDown(KEY_LEFT) && IsKeyDown(KEY_RIGHT)){
+        std::cout<<"both pressed\n";
+        this->dontMove();
+        return false;
+    }
+    if(IsKeyDown(KEY_LEFT)){
+        std::cout<<"KEY_A pressed\n";
+        this->moveLeft(FPS);
+        return true;
+    }
+    if(IsKeyDown(KEY_RIGHT)){
+        std::cout<<"KEY_D pressed\n";
+        this->moveRight(FPS);
+        return true;
+    }
+
+    return false;
+
 }
 
-void Bar::moveLeft()
+void Bar::moveRight(unsigned int FPS)
 {
-    this->coords.setX(this->coords.getX() - 1);
+    this->coords.setX(this->coords.getX() + (static_cast<float>(4*60))/FPS);
+}
+
+void Bar::moveLeft(unsigned int FPS)
+{
+    this->coords.setX(this->coords.getX() - (static_cast<float>(4*60))/FPS);
 }
 
 void Bar::dontMove()

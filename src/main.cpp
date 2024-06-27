@@ -1,22 +1,30 @@
 #include <raylib.h>
+#include <iostream>
+#include <string>
 #include "../headers/bar.hpp"
 #include "../headers/coords.hpp"
-
+#include "../headers/gameModel.hpp"
 
 int main(){
 
     InitWindow(screenDims.screenWidth, screenDims.screenHeight, "VideoBreaker");
 
-    SetTargetFPS(60);
+    GameModel gm = GameModel();
 
-    Bar bar(ScreenCoords(screenDims.screenWidth/2-200/2, screenDims.screenHeight-10), RED, 200, 10);
+    SetTargetFPS(gm.getFPS());
 
     // Main game loop
     while (!WindowShouldClose()){
+
+
         BeginDrawing();
 
-        bar.draw();
+            ClearBackground(BLACK);
+            
+            gm.update();
+
 
         EndDrawing();
+
     }
 }

@@ -12,6 +12,11 @@ private:
     float pixelWidth;
     float pixelHeight;
 
+    bool shouldMove(unsigned int FPS);
+    void moveRight(unsigned int FPS);
+    void moveLeft(unsigned int FPS);
+    void dontMove();
+
 public:
 
     Bar(ScreenCoords coords, Color color, float pixelWidth, float pixelHeight);
@@ -24,10 +29,8 @@ public:
     float getPixelWidth() const;
     float getPixelHeight() const;
 
-    void moveRight();
-    void moveLeft();
-    void dontMove();
 
+    void updatePosition(unsigned int FPS);
     void draw();
 
 };
