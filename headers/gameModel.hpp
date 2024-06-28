@@ -1,8 +1,11 @@
 #ifndef GAMEMODEL_HPP
 #define GAMEMODEL_HPP
 
+#include <list>
+
 #include "bar.hpp"
-#include "../headers/point.hpp"
+#include "ball.hpp"
+#include "point.hpp"
 
 class GameModel{
 
