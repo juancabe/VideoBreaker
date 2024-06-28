@@ -13,14 +13,18 @@ private:
     float pixelWidth;
     float pixelHeight;
 
-    bool shouldMove(unsigned int FPS, Point& gameUpperLeft, Point& gameDownRight);
-    void moveLeft(unsigned int FPS, Point& gameUpperLeft);
-    void moveRight(unsigned int FPS, Point& gameDownRight);
+    const float v;
+
+    bool shouldMove(Point& gameUpperLeft, Point& gameDownRight);
+    void moveLeft(Point& gameUpperLeft);
+    void moveRight(Point& gameDownRight);
     void dontMove();
+
+
 
 public:
 
-    Bar(ScreenCoords coords, Color color, float pixelWidth, float pixelHeight);
+    Bar(ScreenCoords coords, Color color, float pixelWidth, float pixelHeight, unsigned int FPS);
 
     bool checkCollision(ScreenCoords coords);
 
@@ -31,7 +35,7 @@ public:
     float getPixelHeight() const;
 
 
-    void updatePosition(unsigned int FPS, Point& gameUpperLeft, Point& gameDownRight);
+    void updatePosition(Point& gameUpperLeft, Point& gameDownRight);
     void draw();
 
 };

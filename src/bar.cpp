@@ -1,7 +1,7 @@
 #include "../headers/bar.hpp"
 
-Bar::Bar(ScreenCoords coords, Color color, float pixelWidth, float pixelHeight)
-    : coords(coords.getX(), coords.getY())
+Bar::Bar(ScreenCoords coords, Color color, float pixelWidth, float pixelHeight, unsigned int FPS)
+    : coords(coords.getX(), coords.getY()), v((static_cast<float>(4*60))/FPS)
 {
     this->color = color;
     this->pixelWidth = pixelWidth;
@@ -28,8 +28,8 @@ float Bar::getPixelHeight() const
     return this->pixelHeight;
 }
 
-void Bar::updatePosition(unsigned int FPS, Point& gameUpperLeft, Point& gameDownRight){
-    this->shouldMove(FPS, gameUpperLeft, gameDownRight);
+void Bar::updatePosition(Point& gameUpperLeft, Point& gameDownRight){
+    this->shouldMove(gameUpperLeft, gameDownRight);
 }
 
 void Bar::draw()
@@ -39,7 +39,7 @@ void Bar::draw()
 
 }
 
-bool Bar::shouldMove(unsigned int FPS, Point& gameUpperLeft, Point& gameDownRight){
+bool Bar::shouldMove(Point& gameUpperLeft, Point& gameDownRight){
 
 
     if(IsKeyDown(KEY_LEFT) && IsKeyDown(KEY_RIGHT)){
@@ -47,11 +47,11 @@ bool Bar::shouldMove(unsigned int FPS, Point& gameUpperLeft, Point& gameDownRigh
         return false;
     }
     if(IsKeyDown(KEY_LEFT)){
-        this->moveLeft(FPS, gameUpperLeft);
+        this->moveLeft(gameUpperLeft);
         return true;
     }
     if(IsKeyDown(KEY_RIGHT)){
-        this->moveRight(FPS, gameDownRight);
+        this->moveRight(gameDownRight);
         return true;
     }
 
@@ -59,14 +59,32 @@ bool Bar::shouldMove(unsigned int FPS, Point& gameUpperLeft, Point& gameDownRigh
 
 }
 
-void Bar::moveRight(unsigned int FPS, Point& gameDownRight)
+void Bar::moveRight(Point& gameDownRight)
 {
-    this->coords.setX(this->coords.getX() + (static_cast<float>(4*60))/FPS);
+    float newX = this->coords.getX() + this->v;
+    if((newX + this->getPixelWidth()) < gameDownRight.getX()){
+         this->coords.setX(newX);
+         return;
+    }
+    if((this->coords.getX() + this->getPixelWidth()) >= gameDownRight.getX()){
+        return;
+    } else{
+        this->coords.setX(gameDownRight.getX() - this->getPixelWidth());
+    }
 }
-
-void Bar::moveLeft(unsigned int FPS, Point& gameUpperLeft)
+void Bar::moveLeft(Point& gameUpperLeft)
 {
-    this->coords.setX(this->coords.getX() - (static_cast<float>(4*60))/FPS);
+    float newX = this->coords.getX() - this->v;
+    if(newX > gameUpperLeft.getX()){
+         this->coords.setX(newX);
+         return;
+    }
+    if(this->coords.getX() <= gameUpperLeft.getX()){
+        return;
+    } else{
+        this->coords.setX(gameUpperLeft.getX());
+    }
+
 }
 
 void Bar::dontMove()
