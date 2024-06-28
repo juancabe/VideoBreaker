@@ -7,9 +7,9 @@
 
 int main(){
 
-    InitWindow(screenDims.screenWidth, screenDims.screenHeight, "VideoBreaker");
-
     GameModel gm = GameModel();
+
+    InitWindow(gm.getScreenPixelWidth(), gm.getScreenPixelHeight(), "VideoBreaker");
 
     SetTargetFPS(gm.getFPS());
 

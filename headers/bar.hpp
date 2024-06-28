@@ -3,6 +3,7 @@
 
 #include <raylib.h>
 #include "../headers/coords.hpp"
+#include "../headers/point.hpp"
 
 class Bar{
 
@@ -12,9 +13,9 @@ private:
     float pixelWidth;
     float pixelHeight;
 
-    bool shouldMove(unsigned int FPS);
-    void moveRight(unsigned int FPS);
-    void moveLeft(unsigned int FPS);
+    bool shouldMove(unsigned int FPS, Point& gameUpperLeft, Point& gameDownRight);
+    void moveLeft(unsigned int FPS, Point& gameUpperLeft);
+    void moveRight(unsigned int FPS, Point& gameDownRight);
     void dontMove();
 
 public:
@@ -30,7 +31,7 @@ public:
     float getPixelHeight() const;
 
 
-    void updatePosition(unsigned int FPS);
+    void updatePosition(unsigned int FPS, Point& gameUpperLeft, Point& gameDownRight);
     void draw();
 
 };
