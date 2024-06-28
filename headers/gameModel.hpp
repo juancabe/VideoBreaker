@@ -19,6 +19,8 @@ private:
 	Point gameUpperLeft;
 	Point gameDownRight;
 
+	void drawBackGround();
+
 public:
 	GameModel();
 	void update();

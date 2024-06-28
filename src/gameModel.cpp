@@ -1,4 +1,5 @@
 #include "../headers/gameModel.hpp"
+#include <iostream>
 
 GameModel::GameModel(){
 	
@@ -23,9 +24,8 @@ void GameModel::update(){
 	bar->updatePosition(this->gameUpperLeft, this->gameDownRight);
 
 	// Draw
+	this->drawBackGround();
 	bar->draw();
-	DrawCircle(this->gameUpperLeft.getX(), this->gameUpperLeft.getY(), 5, RED);
-	DrawCircle(this->gameDownRight.getX(), this->gameDownRight.getY(), 5, RED);
 }
 
 unsigned int GameModel::getFPS(){
@@ -38,4 +38,19 @@ int GameModel::getScreenPixelHeight(){
 
 int GameModel::getScreenPixelWidth(){
 	return this->screenPixelWidth;
+}
+
+void GameModel::drawBackGround(){
+
+	static Rectangle rec = {
+		this->gameUpperLeft.getX(),
+		this->gameUpperLeft.getY(),
+		this->gamePixelWidth,
+		this->gamePixelHeight
+	};
+
+	static Color cGy = {65, 65, 65, 100};
+	static Color dGy = {30, 30, 30, 100};
+
+	DrawRectangleGradientEx(rec, dGy, cGy, dGy, cGy);
 }
