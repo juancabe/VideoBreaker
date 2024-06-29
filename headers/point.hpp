@@ -15,6 +15,8 @@ public:
 
 	Point operator+(const Point& toAdd);
 	Point& operator+=(const Point& other);
+	Point operator*(float factor) const;
+	Point& operator*=(float factor);
 };
 
 

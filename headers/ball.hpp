@@ -10,13 +10,14 @@ class Ball{
 	
 	private:
 	
-	static float velocity;
 	
 	Point direction;
 	Point position;
 	const int r = 3;
 
 	public:
+	
+	static float velocity;
 
 	Ball(Point p);
 	void updatePosition(GameModel * gm);

@@ -24,7 +24,16 @@ Point Point::operator+(const Point& toAdd){
 }
 
 Point& Point::operator+=(const Point& other) {
-        x += other.x;
-        y += other.y;
-        return *this;
+	x += other.x;
+	y += other.y;
+	return *this;
+}
+Point Point::operator*(float factor) const {
+	return Point(x * factor, y * factor);
+}
+
+Point& Point::operator*=(float factor) {
+	x *= factor;
+	y *= factor;
+	return *this;
 }

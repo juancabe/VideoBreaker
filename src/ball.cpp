@@ -7,15 +7,15 @@ float Ball::velocity = 1.0f;
 Ball::Ball(Point p)
 {
 	this->position = p;
-	this->direction = Point(3.0f, 3.0f);
+	this->direction = Point(1.0f, 1.0f);
 
 }
 
 void Ball::updatePosition(GameModel * gm){
-	Point newPos = this->position + this->direction;
+	Point newPos = this->position + this->direction*velocity;
 
 	if(!gm->willCollide(this, newPos)){
-		this->position += this->direction;
+		this->position += (this->direction*velocity);
 	}
 }
 
