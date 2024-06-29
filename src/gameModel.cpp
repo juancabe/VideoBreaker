@@ -16,7 +16,7 @@ GameModel::GameModel(): balls(){
 	bar = new Bar(ScreenCoords(screenDims.screenWidth/2-200/2, screenDims.screenHeight-10),
 		RED, gamePixelWidth/3, 10, this->FPS);
 
-	Ball::velocity = (4.0f*60)/this->FPS;
+	Ball::velocity = (5.0f*60)/this->FPS;
 
 	balls.push_back(Ball(Point(gameUpperLeft.getX() + gamePixelWidth/2,
 							 gameUpperLeft.getY() + gamePixelHeight/2)));

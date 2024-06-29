@@ -20,7 +20,7 @@ void Ball::updatePosition(GameModel * gm){
 }
 
 void Ball::draw(){
-	DrawCircle(position.getX(), position.getY(), 3, RED);
+	DrawCircle(position.getX(), position.getY(), 6, RED);
 }
 
 Point Ball::getDirection(){
