@@ -1,11 +1,12 @@
 #ifndef GAMEMODEL_HPP
 #define GAMEMODEL_HPP
 
-#include <list>
+#include <vector>
 
 #include "bar.hpp"
 #include "ball.hpp"
 #include "point.hpp"
+
 
 class GameModel{
 
@@ -22,6 +23,8 @@ private:
 	Point gameUpperLeft;
 	Point gameDownRight;
 
+    std::vector<Ball> balls;
+
 	void drawBackGround();
 
 public:
@@ -31,6 +34,8 @@ public:
 
 	int getScreenPixelWidth();
 	int getScreenPixelHeight();
+
+    bool willCollide(Ball * ball, Point& newPos);
 
 };
 

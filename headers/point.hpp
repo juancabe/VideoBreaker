@@ -14,6 +14,7 @@ public:
 	float getY();
 
 	Point operator+(const Point& toAdd);
+	Point& operator+=(const Point& other);
 };
 
 

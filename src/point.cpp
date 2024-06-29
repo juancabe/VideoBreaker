@@ -22,3 +22,9 @@ float Point::getY(){
 Point Point::operator+(const Point& toAdd){
 	return Point(this->x + toAdd.x, this->y + toAdd.y);
 }
+
+Point& Point::operator+=(const Point& other) {
+        x += other.x;
+        y += other.y;
+        return *this;
+}
