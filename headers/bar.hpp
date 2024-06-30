@@ -5,6 +5,8 @@
 #include "../headers/coords.hpp"
 #include "../headers/point.hpp"
 
+class Ball;
+
 class Bar{
 
 private:
@@ -12,6 +14,7 @@ private:
     Color color;
     float pixelWidth;
     float pixelHeight;
+    int roundedRadious;
 
     const float v;
 
@@ -34,6 +37,8 @@ public:
     float getPixelWidth() const;
     float getPixelHeight() const;
 
+    bool ballCollision(Ball * ball, Point& newPos);
+    
 
     void updatePosition(Point& gameUpperLeft, Point& gameDownRight);
     void draw();

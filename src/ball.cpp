@@ -2,7 +2,7 @@
 #include "../headers/gameModel.hpp"
 #include <iostream>
 
-float Ball::velocity = 1.0f;
+float Ball::velocity = 100000.0f;
 
 Ball::Ball(Point p)
 {
@@ -20,7 +20,12 @@ void Ball::updatePosition(GameModel * gm){
 }
 
 void Ball::draw(){
-	DrawCircle(position.getX(), position.getY(), 6, RED);
+	Point ghostBall(this->position);
+	for(int i = 0; i < 100; i++){
+		ghostBall += (this->direction*10.0f);
+		DrawCircle(ghostBall.getX(), ghostBall.getY(), 2, WHITE);
+	}
+	DrawCircle(position.getX(), position.getY(), this->r, RED);
 }
 
 Point Ball::getDirection(){
@@ -29,4 +34,12 @@ Point Ball::getDirection(){
 
 void Ball::setDirection(Point direction){
 	this->direction = direction;
+}
+
+int Ball::getR(){
+	return this->r;
+}
+
+Point Ball::getPos(){
+	return this->position;
 }

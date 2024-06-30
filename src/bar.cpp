@@ -1,4 +1,5 @@
 #include "../headers/bar.hpp"
+#include "../headers/ball.hpp"
 
 Bar::Bar(ScreenCoords coords, Color color, float pixelWidth, float pixelHeight, unsigned int FPS)
     : coords(coords.getX(), coords.getY()), v((static_cast<float>(4*60))/FPS)
@@ -6,6 +7,7 @@ Bar::Bar(ScreenCoords coords, Color color, float pixelWidth, float pixelHeight, 
     this->color = color;
     this->pixelWidth = pixelWidth;
     this->pixelHeight = pixelHeight;
+    this->roundedRadious = static_cast<int>(pixelHeight)/2;
 }
 
 ScreenCoords Bar::getCoords() const
@@ -34,8 +36,16 @@ void Bar::updatePosition(Point& gameUpperLeft, Point& gameDownRight){
 
 void Bar::draw()
 {
-    Rectangle rec = {this->coords.getX(), this->coords.getY(), this->getPixelWidth(), this->getPixelHeight()};
-    DrawRectangleRounded(rec, 0.40, 0, this->color);
+    Rectangle rec = {coords.getX() + static_cast<float>(roundedRadious), coords.getY(),
+                    getPixelWidth() - static_cast<float>(roundedRadious)*2, getPixelHeight()};
+    DrawRectangleRec(rec, RED);
+    DrawCircle(static_cast<int>(coords.getX()) + roundedRadious,
+                static_cast<int>(coords.getY())+rec.height/2, roundedRadious, RED);
+    DrawCircle(static_cast<int>(coords.getX()) + pixelWidth - roundedRadious, 
+                static_cast<int>(coords.getY())+rec.height/2, roundedRadious, RED);
+
+    DrawCircle(coords.getX(), coords.getY() + pixelHeight/2, 2, WHITE);
+    DrawCircle(coords.getX() + pixelWidth, coords.getY() + pixelHeight/2, 2, WHITE);
 
 }
 
@@ -93,5 +103,33 @@ void Bar::dontMove()
 
 bool Bar::checkCollision(ScreenCoords coords)
 {
+    return false;
+}
+
+bool Bar::ballCollision(Ball * ball, Point& newPos)
+{   
+    int r = ball->getR();
+
+    if((newPos.getY() + r) < this->coords.getY() || // The ball->is upper than the bar
+        newPos.getX() < this->coords.getX() || // The ball->is at the left of the bar
+        newPos.getX() > (this->coords.getX() + this->pixelWidth)) // The ball->is at the right of the bar
+    {
+        return false;
+    }
+
+    if(newPos.getX() > (coords.getX() + roundedRadious) ||
+        newPos.getX() < (coords.getX() + pixelWidth - roundedRadious)) // Ball is at the plain surface of the bar
+    {
+        ball->setDirection(Point(ball->getDirection().getX(), -ball->getDirection().getY()));
+        return true;
+    }
+
+    if(newPos.getX() > coords.getX() ||
+        newPos.getX() < (coords.getX() + pixelWidth)) // Ball is at the rounded surface of the bar
+    {
+        ball->setDirection(Point(ball->getDirection().getX(), -ball->getDirection().getY()));
+        return true;
+    }
+
     return false;
 }

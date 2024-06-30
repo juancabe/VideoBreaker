@@ -13,10 +13,10 @@ GameModel::GameModel(): balls(){
 	gameDownRight = Point((screenPixelWidth - gamePixelWidth)/2 + gamePixelWidth, gamePixelHeight);
 	
 	FPS = 160;
-	bar = new Bar(ScreenCoords(screenDims.screenWidth/2-200/2, screenDims.screenHeight-10),
-		RED, gamePixelWidth/3, 10, this->FPS);
+	bar = new Bar(ScreenCoords(screenDims.screenWidth/2-200/2, screenDims.screenHeight-25),
+		RED, gamePixelWidth/3, 18, this->FPS);
 
-	Ball::velocity = (5.0f*60)/this->FPS;
+	Ball::velocity = (1.0f*60)/this->FPS;
 
 	balls.push_back(Ball(Point(gameUpperLeft.getX() + gamePixelWidth/2,
 							 gameUpperLeft.getY() + gamePixelHeight/2)));
@@ -68,19 +68,22 @@ void GameModel::drawBackGround(){
 }
 
 bool GameModel::willCollide(Ball * ball, Point& newPos){
-	if(newPos.getX() < this->gameUpperLeft.getX()){ // Colliding with left wall
+	if(newPos.getX() - ball->getR() < this->gameUpperLeft.getX()){ // Colliding with left wall
 		ball->setDirection(Point(-ball->getDirection().getX(), ball->getDirection().getY()));
 		return true;
 	}
-	if(newPos.getX() > this->gameDownRight.getX()){ // Colliding with right wall
+	if(newPos.getX() + ball->getR() > this->gameDownRight.getX()){ // Colliding with right wall
 		ball->setDirection(Point(-ball->getDirection().getX(), ball->getDirection().getY()));
 		return true;
 	}
-	if(newPos.getY() < this->gameUpperLeft.getY()){ // Colliding with top wall
+	if(newPos.getY() - ball->getR() < this->gameUpperLeft.getY()){ // Colliding with top wall
 		ball->setDirection(Point(ball->getDirection().getX(), -ball->getDirection().getY()));
 		return true;
 	}
-	if(newPos.getY() > this->gameDownRight.getY()){ // Colliding with bottom wall
+	if(bar->ballCollision(ball, newPos)){ // colliding with bar
+		return true;
+	}
+	if(newPos.getY() + ball->getR() > this->gameDownRight.getY()){ // Colliding with bottom wall
 		ball->setDirection(Point(ball->getDirection().getX(), -ball->getDirection().getY()));
 		return true;
 	}

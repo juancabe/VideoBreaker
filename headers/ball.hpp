@@ -13,7 +13,7 @@ class Ball{
 	
 	Point direction;
 	Point position;
-	const int r = 3;
+	const int r = 5;
 
 	public:
 	
@@ -25,6 +25,10 @@ class Ball{
 
 	Point getDirection();
 	void setDirection(Point direction);
+	
+	int getR();
+
+	Point getPos();
 
 
 };
