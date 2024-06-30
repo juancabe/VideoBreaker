@@ -14,9 +14,9 @@ Ball::Ball(Point p)
 void Ball::updatePosition(GameModel * gm){
 	Point newPos = this->position + this->direction*velocity;
 
-	if(!gm->willCollide(this, newPos)){
-		this->position += (this->direction*velocity);
-	}
+	gm->willCollide(this, newPos);
+	this->position += (this->direction*velocity);
+	
 }
 
 void Ball::draw(){
