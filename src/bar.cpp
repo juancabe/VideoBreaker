@@ -117,19 +117,21 @@ bool Bar::ballCollision(Ball * ball, Point& newPos)
         return false;
     }
 
-    if(newPos.getX() > (coords.getX() + roundedRadious) ||
+    // Being down the bar...
+
+    if(newPos.getX() > (coords.getX() + roundedRadious) &&
         newPos.getX() < (coords.getX() + pixelWidth - roundedRadious)) // Ball is at the plain surface of the bar
     {
         ball->setDirection(Point(ball->getDirection().getX(), -ball->getDirection().getY()));
         return true;
     }
-
-    if(newPos.getX() > coords.getX() ||
-        newPos.getX() < (coords.getX() + pixelWidth)) // Ball is at the rounded surface of the bar
+    // Ball is at the rounded surface of the bar
+    if(newPos.getX() > coords.getX() && newPos.getX() <= (coords.getX() + roundedRadious)) // left one
     {
         ball->setDirection(Point(ball->getDirection().getX(), -ball->getDirection().getY()));
         return true;
     }
+    if(newPos.getX() < (coords.getX() + pixelWidth)) // right one
 
     return false;
 }
