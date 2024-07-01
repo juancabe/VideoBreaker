@@ -134,15 +134,16 @@ bool Bar::ballCollision(Ball * ball, Point& newPos)
         float d = coords.getX() + static_cast<float>(roundedRadious) - newPos.getX();
         float h = sin(acos(d/roundedRadious))*roundedRadious;
         float dh = roundedRadious - h;
-        if(newPos.getY() < (coords.getY() - dh)){
+        std::cout<<"d: "<<d<<" h: "<<h<<" dh: "<<dh<<" newPos.y: "<<newPos.getY()<<" coords.y + dh: "<<coords.getY() + dh<<std::endl;
+        if(newPos.getY() < (coords.getY() + dh)){
             return false;
         } else{
             Point nVector = newPos - Point(coords.getX() + roundedRadious, (coords.getY())+getPixelHeight()/2);
             nVector.normalizeToOne();
             Point calc = ball->getDirection() - nVector;
             calc.normalizeToOne();
-            std::cout<<"Antigua direccion x: "<<ball->getDirection().getX()<<" y:"<<ball->getDirection().getY()<<std::endl;
-            std::cout<<"Nueva direccion x: "<<calc.getX()<<" y:"<<calc.getY()<<std::endl;
+            //std::cout<<"Antigua direccion x: "<<ball->getDirection().getX()<<" y:"<<ball->getDirection().getY()<<std::endl;
+            //std::cout<<"Nueva direccion x: "<<calc.getX()<<" y:"<<calc.getY()<<std::endl;
             ball->setDirection(calc);
             return true;
         }
