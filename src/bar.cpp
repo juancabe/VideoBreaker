@@ -131,19 +131,21 @@ bool Bar::ballCollision(Ball * ball, Point& newPos)
     // Ball is at the rounded surface of the bar
     if(newPos.getX() > coords.getX() && newPos.getX() <= (coords.getX() + roundedRadious)) // left one
     {   
-        float d = coords.getX() + static_cast<float>(roundedRadious) - newPos.getX();
-        float h = sin(acos(d/roundedRadious))*roundedRadious;
+        float d = coords.getX() + static_cast<float>(roundedRadious) - (newPos.getX() + ball->getR()*(newPos.getX()/coords.getX())); // distance between center of ball x and circle x
+        float h = sin(acos(d/roundedRadious))*roundedRadious; // y distance between ball surface and center of (circle of bar)
         float dh = roundedRadious - h;
         std::cout<<"d: "<<d<<" h: "<<h<<" dh: "<<dh<<" newPos.y: "<<newPos.getY()<<" coords.y + dh: "<<coords.getY() + dh<<std::endl;
-        if(newPos.getY() < (coords.getY() + dh)){
+        if((newPos.getY() + ball->getR()) < (coords.getY() + dh)){
             return false;
         } else{
+            int x;
             Point nVector = newPos - Point(coords.getX() + roundedRadious, (coords.getY())+getPixelHeight()/2);
             nVector.normalizeToOne();
-            Point calc = ball->getDirection() - nVector;
+            Point calc = ball->getDirection() + nVector;
             calc.normalizeToOne();
-            //std::cout<<"Antigua direccion x: "<<ball->getDirection().getX()<<" y:"<<ball->getDirection().getY()<<std::endl;
-            //std::cout<<"Nueva direccion x: "<<calc.getX()<<" y:"<<calc.getY()<<std::endl;
+            std::cout<<"Antigua direccion x: "<<ball->getDirection().getX()<<" y:"<<ball->getDirection().getY()<<std::endl;
+            std::cout<<"Vector normal x:"<<nVector.getX()<<" y: "<<nVector.getY()<<std::endl;
+            std::cout<<"Nueva direccion x: "<<calc.getX()<<" y:"<<calc.getY()<<std::endl;
             ball->setDirection(calc);
             return true;
         }
