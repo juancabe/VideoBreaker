@@ -139,13 +139,11 @@ bool Bar::ballCollision(Ball * ball, Point& newPos)
             return false;
         } else{
             int x;
-            Point nVector = newPos - Point(coords.getX() + roundedRadious, (coords.getY())+getPixelHeight()/2);
+            Point surfaceVector = Point(coords.getX() + roundedRadious, coords.getY()+getPixelHeight()/2);
+            Point nVector = newPos - surfaceVector;
             nVector.normalizeToOne();
-            Point calc = ball->getDirection() + nVector;
+            Point calc = nVector - ball->getDirection();
             calc.normalizeToOne();
-            std::cout<<"Antigua direccion x: "<<ball->getDirection().getX()<<" y:"<<ball->getDirection().getY()<<std::endl;
-            std::cout<<"Vector normal x:"<<nVector.getX()<<" y: "<<nVector.getY()<<std::endl;
-            std::cout<<"Nueva direccion x: "<<calc.getX()<<" y:"<<calc.getY()<<std::endl;
             ball->setDirection(calc);
             return true;
         }
