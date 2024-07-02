@@ -13,14 +13,21 @@ GameModel::GameModel(): balls(){
 	gameDownRight = Point((screenPixelWidth - gamePixelWidth)/2 + gamePixelWidth, gamePixelHeight);
 	
 	FPS = 160;
+
+	// Create bar
 	bar = new Bar(ScreenCoords(screenDims.screenWidth/2-200/2, screenDims.screenHeight-40),
 		RED, gamePixelWidth/3, 30, this->FPS);
-
+	// Set static Ball class variable
 	Ball::velocity = (3.0f*60)/this->FPS;
-
+	// Create start ball
 	balls.push_back(Ball(Point(gameUpperLeft.getX() + gamePixelWidth/2,
 							 gameUpperLeft.getY() + gamePixelHeight/2)));
 
+	// Create blocks
+	for(int i = 0; i < 10; i++){
+		blocks.push_back(Block(Point(gameUpperLeft.getX() + i*Block::width + i*Block::margin,
+									gameUpperLeft.getY() + Block::height)));
+	}
 }
 
 void GameModel::update(){
@@ -37,6 +44,9 @@ void GameModel::update(){
 	bar->draw();
 	for(Ball ball : balls){
 		ball.draw();
+	}
+	for(Block block : blocks){
+		block.draw();
 	}
 }
 
@@ -83,10 +93,16 @@ bool GameModel::willCollide(Ball * ball, Point& newPos){
 	if(bar->ballCollision(ball, newPos)){ // colliding with bar
 		return true;
 	}
+	for(Block &block : blocks){
+		if(block.ballCollision(ball, newPos)){
+			return true;
+		}
+	}
 	if(newPos.getY() + ball->getR() > this->gameDownRight.getY()){ // Colliding with bottom wall
 		ball->setDirection(Point(ball->getDirection().getX(), -ball->getDirection().getY()));
 		return true;
 	}
+
 
 	return false;
 }

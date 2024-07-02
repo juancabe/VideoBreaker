@@ -6,6 +6,7 @@
 #include "bar.hpp"
 #include "ball.hpp"
 #include "point.hpp"
+#include "block.hpp"
 
 
 class GameModel{
@@ -24,6 +25,7 @@ private:
 	Point gameDownRight;
 
     std::vector<Ball> balls;
+    std::vector<Block> blocks;
 
 	void drawBackGround();
 
