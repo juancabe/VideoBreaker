@@ -131,10 +131,9 @@ bool Bar::ballCollision(Ball * ball, Point& newPos)
     // Ball is at the rounded surface of the bar
     if(newPos.getX() > coords.getX() && newPos.getX() <= (coords.getX() + roundedRadious)) // left one
     {   
-        float d = coords.getX() + static_cast<float>(roundedRadious) - (newPos.getX() + ball->getR()*(newPos.getX()/coords.getX())); // distance between center of ball x and circle x
+        float d = coords.getX() + static_cast<float>(roundedRadious) - (newPos.getX() + ball->getR()*(newPos.getX()/coords.getX())); // distance between surface +- of ball x and circle x
         float h = sin(acos(d/roundedRadious))*roundedRadious; // y distance between ball surface and center of (circle of bar)
         float dh = roundedRadious - h;
-        std::cout<<"d: "<<d<<" h: "<<h<<" dh: "<<dh<<" newPos.y: "<<newPos.getY()<<" coords.y + dh: "<<coords.getY() + dh<<std::endl;
         if((newPos.getY() + ball->getR()) < (coords.getY() + dh)){
             return false;
         } else{
@@ -148,9 +147,29 @@ bool Bar::ballCollision(Ball * ball, Point& newPos)
             return true;
         }
     }
-    if(newPos.getX() < (coords.getX() + pixelWidth)){
-        ball->setDirection(Point(ball->getDirection().getX(), -ball->getDirection().getY()));
-        return true;
+    if(newPos.getX() < (coords.getX() + pixelWidth)){ // right one
+        float d = (newPos.getX() - ball->getR()*(newPos.getX()/coords.getX())) - (coords.getX() + pixelWidth - roundedRadious); // distance between surface +- of ball x and circle x
+        float h = sin(acos(d/roundedRadious))*roundedRadious; // y distance between ball surface and center of (circle of bar)
+        float dh = roundedRadious - h;
+        if((newPos.getY() + ball->getR()) < (coords.getY() + dh)){
+            return false;
+        } else{
+            int x;
+            Point surfaceVector = Point(coords.getX() + pixelWidth - roundedRadious, coords.getY()+getPixelHeight()/2);
+            Point nVector =  newPos - surfaceVector;
+            std::cout << "before normalizing nVector: " << nVector.getX() << " " << nVector.getY() << std::endl;
+            nVector.normalizeToOne();
+            Point calc = nVector - ball->getDirection();
+            calc.normalizeToOne();
+            std::cout << "surfaceVector: " << surfaceVector.getX() << " " << surfaceVector.getY() << std::endl;
+            std::cout<< "newPos: " << newPos.getX() << " " << newPos.getY() << std::endl;
+            std::cout << "nVector: " << nVector.getX() << " " << nVector.getY() << std::endl;
+            std::cout << "ball->getDirection(): " << ball->getDirection().getX() << " " << ball->getDirection().getY() << std::endl;
+            std::cout << "calc: " << calc.getX() << " " << calc.getY() << std::endl;
+
+            ball->setDirection(calc);
+            return true;
+        }
     }
 
     return false;
