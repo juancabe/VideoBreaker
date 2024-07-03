@@ -93,8 +93,9 @@ bool GameModel::willCollide(Ball * ball, Point& newPos){
 	if(bar->ballCollision(ball, newPos)){ // colliding with bar
 		return true;
 	}
-	for(Block &block : blocks){
-		if(block.ballCollision(ball, newPos)){
+	for(int i = 0; i < blocks.size(); i++){
+		if(blocks[i].ballCollision(ball, newPos)){
+			blocks.erase(blocks.begin() + i);
 			return true;
 		}
 	}

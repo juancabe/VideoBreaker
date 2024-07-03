@@ -15,7 +15,7 @@ class Block{
         Point getUpLeftPos() const;
         void setPos(Point& pos);
         void draw();
-        bool ballCollision(Ball * ball, Point& ballPos);
+        bool ballCollision(Ball * ball, Point& newPos);
 };
 
 
