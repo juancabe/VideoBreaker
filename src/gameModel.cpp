@@ -36,13 +36,13 @@ GameModel::GameModel(): balls(){
 void GameModel::update(){
 
 	// Update Positions
-	bar->updatePosition(this->gameUpperLeft, this->gameDownRight);
 
 	for(int i = 0; i < balls.size(); i++){
 		if(balls[i].updatePosition(this)){
 			balls.erase(balls.begin() + i);
 		}
 	}
+	bar->updatePosition(this->gameUpperLeft, this->gameDownRight);
 	if(balls.size() == 0){
 		gameOver();
 	}
@@ -126,7 +126,6 @@ Point * GameModel::getGameDownRight(){
 }
 
 void GameModel::gameOver(){
-	std::cout << "Game Over" << std::endl;
 	isGameOver = true;
 	return;
 }
