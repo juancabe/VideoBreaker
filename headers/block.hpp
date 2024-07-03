@@ -8,9 +8,9 @@ class Block{
     private:
         Point upLeftPos;
     public:
-        static const int width = 10;
-        static const int height = 10;
-        static const int margin = 5;
+        static const int width = 15;
+        static const int height = 15;
+        static const int margin = 3;
         Block(Point upLeftPos);
         Point getUpLeftPos() const;
         void setPos(Point& pos);

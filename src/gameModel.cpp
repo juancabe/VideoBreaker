@@ -18,16 +18,17 @@ GameModel::GameModel(): balls(){
 	bar = new Bar(ScreenCoords(screenDims.screenWidth/2-200/2, screenDims.screenHeight-40),
 		RED, gamePixelWidth/3, 30, this->FPS);
 	// Set static Ball class variable
-	Ball::velocity = (3.0f*60)/this->FPS;
+	Ball::velocity = (5.0f*60)/this->FPS;
 	// Create start ball
 	balls.push_back(Ball(Point(gameUpperLeft.getX() + gamePixelWidth/2,
 							 gameUpperLeft.getY() + gamePixelHeight/2)));
 
 	// Create blocks
-	for(int i = 0; i < 10; i++){
-		blocks.push_back(Block(Point(gameUpperLeft.getX() + i*Block::width + i*Block::margin,
-									gameUpperLeft.getY() + Block::height)));
-	}
+	for(int j = 10; j < 15;j++)
+		for(int i = 0; i < (static_cast<int>(gamePixelWidth))/(Block::width + Block::margin); i++){
+			blocks.push_back(Block(Point(gameUpperLeft.getX() + i*Block::width + i*Block::margin,
+										gameUpperLeft.getY() + Block::height*j + Block::margin*j)));
+		}
 }
 
 void GameModel::update(){
@@ -90,14 +91,14 @@ bool GameModel::willCollide(Ball * ball, Point& newPos){
 		ball->setDirection(Point(ball->getDirection().getX(), -ball->getDirection().getY()));
 		return true;
 	}
-	if(bar->ballCollision(ball, newPos)){ // colliding with bar
-		return true;
-	}
 	for(int i = 0; i < blocks.size(); i++){
 		if(blocks[i].ballCollision(ball, newPos)){
 			blocks.erase(blocks.begin() + i);
-			return true;
 		}
+	}
+
+	if(bar->ballCollision(ball, newPos)){ // colliding with bar
+		return true;
 	}
 	if(newPos.getY() + ball->getR() > this->gameDownRight.getY()){ // Colliding with bottom wall
 		ball->setDirection(Point(ball->getDirection().getX(), -ball->getDirection().getY()));

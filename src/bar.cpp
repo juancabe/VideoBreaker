@@ -1,7 +1,6 @@
 #include "../headers/bar.hpp"
 #include "../headers/ball.hpp"
 
-#include <iostream>
 #include <math.h>
 
 Bar::Bar(ScreenCoords coords, Color color, float pixelWidth, float pixelHeight, unsigned int FPS)
@@ -157,16 +156,9 @@ bool Bar::ballCollision(Ball * ball, Point& newPos)
             int x;
             Point surfaceVector = Point(coords.getX() + pixelWidth - roundedRadious, coords.getY()+getPixelHeight()/2);
             Point nVector =  newPos - surfaceVector;
-            std::cout << "before normalizing nVector: " << nVector.getX() << " " << nVector.getY() << std::endl;
             nVector.normalizeToOne();
             Point calc = nVector - ball->getDirection();
             calc.normalizeToOne();
-            std::cout << "surfaceVector: " << surfaceVector.getX() << " " << surfaceVector.getY() << std::endl;
-            std::cout<< "newPos: " << newPos.getX() << " " << newPos.getY() << std::endl;
-            std::cout << "nVector: " << nVector.getX() << " " << nVector.getY() << std::endl;
-            std::cout << "ball->getDirection(): " << ball->getDirection().getX() << " " << ball->getDirection().getY() << std::endl;
-            std::cout << "calc: " << calc.getX() << " " << calc.getY() << std::endl;
-
             ball->setDirection(calc);
             return true;
         }

@@ -25,113 +25,55 @@ void Block::draw()
         width,
         height
     };
-    std::cout << "Drawing block at " << upLeftPos.getX() << ", " << upLeftPos.getY() << std::endl;
     DrawRectangleRec(rec, RED);
 }
 
         
 bool Block::ballCollision(Ball * ball, Point& newPos){
-    
-    if(newPos.getX() - ball->getR() > upLeftPos.getX() + width ||
-        newPos.getX() + ball->getR() < upLeftPos.getX())
+    // Left side of block
+    if( (newPos.getX() + (static_cast<float>(ball->getR()))) > this->getUpLeftPos().getX() &&
+        (newPos.getX() - (static_cast<float>(ball->getR()))) < this->getUpLeftPos().getX() &&
+        (newPos.getY() + (static_cast<float>(ball->getR()))/300) < (this->getUpLeftPos().getY() + this->height) &&
+        (newPos.getY() - (static_cast<float>(ball->getR()))/300) > this->getUpLeftPos().getY())
     {
-        return false;
+        ball->setDirection(Point(-ball->getDirection().getX(), ball->getDirection().getY()));
+        std::cout << "Left" << std::endl;
+        return true;
     }
 
-    if(ball->getDirection().getX() < 0){
-        if(ball->getDirection().getY() < 0){
-            // collides with either bottom or left
-            if(newPos.getY() - ball->getR() > upLeftPos.getY() + height ||
-                newPos.getY() + ball->getR() < upLeftPos.getY() + height){
-                return false;
-            } else if(newPos.getY() - ball->getR() < upLeftPos.getY() + height/3*2)
-            {
-                // collides with left
-                ball->setDirection(Point(-ball->getDirection().getX(), ball->getDirection().getY()));
-                return true;
-            } else{
-                // collides with bottom
-                ball->setDirection(Point(ball->getDirection().getX(), -ball->getDirection().getY()));
-                return true;
-            }
-        }
-        else if (ball->getDirection().getY() > 0){
-            // collides with either top or left
-            if(newPos.getY() + ball->getR() < upLeftPos.getY() ||
-                newPos.getY() - ball->getR() > upLeftPos.getY() - height){
-                return false;
-            }
-            else if(newPos.getY() + ball->getR() > upLeftPos.getY() - height/3)
-            {
-                // collides with left
-                ball->setDirection(Point(-ball->getDirection().getX(), ball->getDirection().getY()));
-                return true;
-            }
-            else{
-                // collides with top
-                ball->setDirection(Point(ball->getDirection().getX(), -ball->getDirection().getY()));
-                return true;
-            }
-            
-        }
+    // Right side of block
+    if( (newPos.getX() - (static_cast<float>(ball->getR()))) < (this->getUpLeftPos().getX() + this->width) &&
+        (newPos.getX() + (static_cast<float>(ball->getR()))) > (this->getUpLeftPos().getX() + this->width) &&
+        (newPos.getY() + (static_cast<float>(ball->getR()))/300) < (this->getUpLeftPos().getY() + this->height) &&
+        (newPos.getY() - (static_cast<float>(ball->getR()))/300) > this->getUpLeftPos().getY())
+    {
+        ball->setDirection(Point(-ball->getDirection().getX(), ball->getDirection().getY()));
+        std::cout << "Right" << std::endl;
+        return true;
     }
-    else if(ball->getDirection().getX() > 0){
-        if(ball->getDirection().getY() < 0){ // ↖
-            // collides with either bottom or right
-            if(newPos.getY() - ball->getR() > upLeftPos.getY() + height ||
-                newPos.getY() + ball->getR() < upLeftPos.getY() + height){
-                return false;
-            } else if(newPos.getY() - ball->getR() < upLeftPos.getY() + height/3*2)
-            {
-                // collides with right
-                ball->setDirection(Point(-ball->getDirection().getX(), ball->getDirection().getY()));
-                return true;
-            } else{
-                // collides with bottom
-                ball->setDirection(Point(ball->getDirection().getX(), -ball->getDirection().getY()));
-                return true;
-            }
-        }
-        else if(ball->getDirection().getY() > 0){ // ↙
-            // collides with either top or right
-            if(newPos.getY() + ball->getR() < upLeftPos.getY() ||
-                newPos.getY() - ball->getR() > upLeftPos.getY() - height){
-                return false;
-            }
-            else if(newPos.getY() + ball->getR() > upLeftPos.getY() - height/3)
-            {
-                // collides with right
-                ball->setDirection(Point(-ball->getDirection().getX(), ball->getDirection().getY()));
-                return true;
-            }
-            else{
-                // collides with top
-                ball->setDirection(Point(ball->getDirection().getX(), -ball->getDirection().getY()));
-                return true;
-            }
-        }
+
+    // Top side of block
+    if( (newPos.getY() + (static_cast<float>(ball->getR()))) > this->getUpLeftPos().getY() &&
+        (newPos.getY() - (static_cast<float>(ball->getR()))) < this->getUpLeftPos().getY() &&
+        (newPos.getX() + (static_cast<float>(ball->getR()))/300) < (this->getUpLeftPos().getX() + this->width) &&
+        (newPos.getX() - (static_cast<float>(ball->getR()))/300) > this->getUpLeftPos().getX())
+    {
+        ball->setDirection(Point(ball->getDirection().getX(), -ball->getDirection().getY()));
+        std::cout << "Top" << std::endl;
+        return true;
     }
-    else{ // collides 
-        if(ball->getDirection().getY() < 0){
-            // collides with bottom
-            if(newPos.getY() - ball->getR() > upLeftPos.getY() + height){
-                return false;
-            }
-            else{
-                ball->setDirection(Point(ball->getDirection().getX(), -ball->getDirection().getY()));
-                return true;
-            }
-        }
-        else{
-            // collides with top
-            if(newPos.getY() + ball->getR() < upLeftPos.getY()){
-                return false;
-            }
-            else{
-                ball->setDirection(Point(ball->getDirection().getX(), -ball->getDirection().getY()));
-                return true;
-            }
-        }
+
+    // Bottom side of block
+    if( (newPos.getY() - ball->getR()) < (this->getUpLeftPos().getY() + this->height) &&
+        (newPos.getY() + ball->getR()) > (this->getUpLeftPos().getY() + this->height) &&
+        (newPos.getX() + (static_cast<float>(ball->getR()))/300) < (this->getUpLeftPos().getX() + this->width) &&
+        (newPos.getX() - (static_cast<float>(ball->getR()))/300) > this->getUpLeftPos().getX())
+    {
+        ball->setDirection(Point(ball->getDirection().getX(), -ball->getDirection().getY()));
+        std::cout << "Bottom" << std::endl;
+        return true;
     }
+
+    return false;
 
 }
