@@ -20,8 +20,16 @@ int main(){
         BeginDrawing();
 
             ClearBackground(BLACK);
+            if(gm.isGameOver){
+                DrawText("Game Over", gm.getScreenPixelWidth()/2 - 50, gm.getScreenPixelHeight()/2, 20, WHITE);
+                DrawText("Press Enter to restart", gm.getScreenPixelWidth()/2 - 100, gm.getScreenPixelHeight()/2 + 20, 20, WHITE);
+                if(IsKeyPressed(KEY_ENTER)){
+                    gm = GameModel();
+                }
+            }else{
+                gm.update();
+            }
             
-            gm.update();
 
 
         EndDrawing();

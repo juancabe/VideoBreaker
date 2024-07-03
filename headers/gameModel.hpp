@@ -15,6 +15,7 @@ private:
 	Bar * bar;
 
 	unsigned int FPS;
+
 	
 	int screenPixelWidth;
 	int screenPixelHeight;
@@ -28,8 +29,11 @@ private:
     std::vector<Block> blocks;
 
 	void drawBackGround();
+	void gameOver();
 
 public:
+
+	bool isGameOver;
 	GameModel();
 	void update();
 	unsigned int getFPS();
@@ -38,6 +42,9 @@ public:
 	int getScreenPixelHeight();
 
     bool willCollide(Ball * ball, Point& newPos);
+
+	Point * getGameUpperLeft();
+	Point * getGameDownRight();
 
 };
 

@@ -2,6 +2,8 @@
 #include <iostream>
 
 GameModel::GameModel(): balls(){
+
+	isGameOver = false;
 	
 	screenPixelWidth = screenDims.screenWidth;
 	screenPixelHeight = screenDims.screenHeight;
@@ -32,12 +34,17 @@ GameModel::GameModel(): balls(){
 }
 
 void GameModel::update(){
-	// Update States
 
 	// Update Positions
 	bar->updatePosition(this->gameUpperLeft, this->gameDownRight);
-	for(Ball &ball : balls){
-		ball.updatePosition(this);
+
+	for(int i = 0; i < balls.size(); i++){
+		if(balls[i].updatePosition(this)){
+			balls.erase(balls.begin() + i);
+		}
+	}
+	if(balls.size() == 0){
+		gameOver();
 	}
 
 	// Draw
@@ -100,11 +107,26 @@ bool GameModel::willCollide(Ball * ball, Point& newPos){
 	if(bar->ballCollision(ball, newPos)){ // colliding with bar
 		return true;
 	}
+	/*
 	if(newPos.getY() + ball->getR() > this->gameDownRight.getY()){ // Colliding with bottom wall
 		ball->setDirection(Point(ball->getDirection().getX(), -ball->getDirection().getY()));
 		return true;
 	}
-
+	*/
 
 	return false;
+}
+
+Point * GameModel::getGameUpperLeft(){
+	return &this->gameUpperLeft;
+}
+
+Point * GameModel::getGameDownRight(){
+	return &this->gameDownRight;
+}
+
+void GameModel::gameOver(){
+	std::cout << "Game Over" << std::endl;
+	isGameOver = true;
+	return;
 }

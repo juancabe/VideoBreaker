@@ -7,15 +7,21 @@ float Ball::velocity = 100000.0f;
 Ball::Ball(Point p)
 {
 	this->position = p;
-	this->direction = Point(0.5f, 1.0f);
+	this->direction = Point(0.1f, 1.0f);
 
 }
 
-void Ball::updatePosition(GameModel * gm){
+bool Ball::updatePosition(GameModel * gm){
 	Point newPos = this->position + this->direction*velocity;
 
 	gm->willCollide(this, newPos);
-	this->position += (this->direction*velocity);	
+	this->position += (this->direction*velocity);
+
+	if(this->position.getY() - this->r > gm->getGameDownRight()->getY()){
+		return true;
+	}else{
+		return false;
+	}
 }
 
 void Ball::draw(){
@@ -41,4 +47,12 @@ int Ball::getR(){
 
 Point Ball::getPos(){
 	return this->position;
+}
+
+Ball& Ball::operator=(const Ball& other) {
+    // Copy each member variable from `other` to `this`
+    this->position = other.position;
+    // Repeat for other member variables...
+
+    return *this; // Return a reference to the current instance
 }

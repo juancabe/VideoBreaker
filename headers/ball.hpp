@@ -20,7 +20,7 @@ class Ball{
 	static float velocity;
 
 	Ball(Point p);
-	void updatePosition(GameModel * gm);
+	bool updatePosition(GameModel * gm);
 	void draw();
 
 	Point getDirection();
@@ -29,6 +29,8 @@ class Ball{
 	int getR();
 
 	Point getPos();
+
+	Ball& operator=(const Ball& other);
 
 
 };

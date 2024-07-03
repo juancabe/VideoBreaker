@@ -36,7 +36,10 @@ bool Block::ballCollision(Ball * ball, Point& newPos){
         (newPos.getY() + (static_cast<float>(ball->getR()))/300) < (this->getUpLeftPos().getY() + this->height) &&
         (newPos.getY() - (static_cast<float>(ball->getR()))/300) > this->getUpLeftPos().getY())
     {
-        ball->setDirection(Point(-ball->getDirection().getX(), ball->getDirection().getY()));
+        float factor = abs(newPos.getY() - this->getUpLeftPos().getY() + this->height/2)/static_cast<float>(ball->getR()*2);
+        std::cout << factor << std::endl;
+        Point newDir = Point(-(ball->getDirection().getX()), ball->getDirection().getY());
+        ball->setDirection(newDir);
         std::cout << "Left" << std::endl;
         return true;
     }
@@ -47,7 +50,10 @@ bool Block::ballCollision(Ball * ball, Point& newPos){
         (newPos.getY() + (static_cast<float>(ball->getR()))/300) < (this->getUpLeftPos().getY() + this->height) &&
         (newPos.getY() - (static_cast<float>(ball->getR()))/300) > this->getUpLeftPos().getY())
     {
-        ball->setDirection(Point(-ball->getDirection().getX(), ball->getDirection().getY()));
+        float factor = abs(newPos.getY() - this->getUpLeftPos().getY() + this->height/2)/static_cast<float>(ball->getR()*2);
+        std::cout << factor << std::endl;
+        Point newDir = Point(-(ball->getDirection().getX()), ball->getDirection().getY());
+        ball->setDirection(newDir);
         std::cout << "Right" << std::endl;
         return true;
     }
