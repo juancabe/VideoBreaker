@@ -46,8 +46,6 @@ void Bar::draw()
     DrawCircle(static_cast<int>(coords.getX()) + pixelWidth - roundedRadious, 
                 static_cast<int>(coords.getY())+rec.height/2, roundedRadious, RED);
 
-    DrawCircle(coords.getX(), coords.getY() + pixelHeight/2, 2, WHITE);
-    DrawCircle(coords.getX() + pixelWidth, coords.getY() + pixelHeight/2, 2, WHITE);
 
 }
 

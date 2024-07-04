@@ -12,6 +12,7 @@ int main(){
     InitWindow(gm.getScreenPixelWidth(), gm.getScreenPixelHeight(), "VideoBreaker");
 
     SetTargetFPS(gm.getFPS());
+    
 
     // Main game loop
     while (!WindowShouldClose()){
@@ -38,6 +39,8 @@ int main(){
                 gm.update();
             }
             
+            // Draw FPS
+            DrawText(std::to_string(GetFPS()).c_str(), 10, 10, 20, WHITE);
 
 
         EndDrawing();
