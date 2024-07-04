@@ -7,13 +7,20 @@
 class Block{
     private:
         Point upLeftPos;
+        bool spawnsBall;
     public:
+
         static const int width = 15;
         static const int height = 15;
         static const int margin = 3;
-        Block(Point upLeftPos);
+
+        Block(Point upLeftPos, bool spawnsBall = false);
+
         Point getUpLeftPos() const;
+        bool getSpawnsBall() const;
+
         void setPos(Point& pos);
+
         void draw();
         bool ballCollision(Ball * ball, Point& newPos);
 };

@@ -30,10 +30,11 @@ private:
 
 	void drawBackGround();
 	void gameOver();
+	bool isGameOver;
+	bool isGameWon;
 
 public:
 
-	bool isGameOver;
 	GameModel();
 	void update();
 	unsigned int getFPS();
@@ -41,7 +42,11 @@ public:
 	int getScreenPixelWidth();
 	int getScreenPixelHeight();
 
+	bool getIsGameOver();
+	bool getIsGameWon();
+
     bool willCollide(Ball * ball, Point& newPos);
+
 
 	Point * getGameUpperLeft();
 	Point * getGameDownRight();

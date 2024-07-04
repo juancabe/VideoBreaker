@@ -2,8 +2,8 @@
 #include <iostream>
 #include <raylib.h>
 
-Block::Block(Point upLeftPos)
-    : upLeftPos(upLeftPos)
+Block::Block(Point upLeftPos, bool spawnsBall)
+    : upLeftPos(upLeftPos), spawnsBall(spawnsBall)
 {
 }
 
@@ -26,33 +26,14 @@ void Block::draw()
         height
     };
     DrawRectangleRec(rec, RED);
+    if(spawnsBall){
+        DrawCircle(upLeftPos.getX() + static_cast<float>(width)/2, upLeftPos.getY() + static_cast<float>(height)/2,
+                    static_cast<float>(width)/4, WHITE);
+    }
 }
 
         
 bool Block::ballCollision(Ball * ball, Point& newPos){
-    // Left side of block
-    if( (newPos.getX() + (static_cast<float>(ball->getR()))) > this->getUpLeftPos().getX() &&
-        (newPos.getX() - (static_cast<float>(ball->getR()))) < this->getUpLeftPos().getX() &&
-        (newPos.getY() + (static_cast<float>(ball->getR()))/300) < (this->getUpLeftPos().getY() + this->height) &&
-        (newPos.getY() - (static_cast<float>(ball->getR()))/300) > this->getUpLeftPos().getY())
-    {
-        float factor = abs(newPos.getY() - this->getUpLeftPos().getY() + this->height/2)/static_cast<float>(ball->getR()*2);
-        Point newDir = Point(-(ball->getDirection().getX()), ball->getDirection().getY());
-        ball->setDirection(newDir);
-        return true;
-    }
-
-    // Right side of block
-    if( (newPos.getX() - (static_cast<float>(ball->getR()))) < (this->getUpLeftPos().getX() + this->width) &&
-        (newPos.getX() + (static_cast<float>(ball->getR()))) > (this->getUpLeftPos().getX() + this->width) &&
-        (newPos.getY() + (static_cast<float>(ball->getR()))/300) < (this->getUpLeftPos().getY() + this->height) &&
-        (newPos.getY() - (static_cast<float>(ball->getR()))/300) > this->getUpLeftPos().getY())
-    {
-        float factor = abs(newPos.getY() - this->getUpLeftPos().getY() + this->height/2)/static_cast<float>(ball->getR()*2);
-        Point newDir = Point(-(ball->getDirection().getX()), ball->getDirection().getY());
-        ball->setDirection(newDir);
-        return true;
-    }
 
     // Top side of block
     if( (newPos.getY() + (static_cast<float>(ball->getR()))) > this->getUpLeftPos().getY() &&
@@ -60,8 +41,13 @@ bool Block::ballCollision(Ball * ball, Point& newPos){
         (newPos.getX() + (static_cast<float>(ball->getR()))/300) < (this->getUpLeftPos().getX() + this->width) &&
         (newPos.getX() - (static_cast<float>(ball->getR()))/300) > this->getUpLeftPos().getX())
     {
-        ball->setDirection(Point(ball->getDirection().getX(), -ball->getDirection().getY()));
-        return true;
+        if(ball->getDirection().getY() > 0){
+            ball->setDirection(Point(ball->getDirection().getX(), -ball->getDirection().getY()));
+            return true;
+        } else{
+            return false;
+        }
+
     }
 
     // Bottom side of block
@@ -70,10 +56,47 @@ bool Block::ballCollision(Ball * ball, Point& newPos){
         (newPos.getX() + (static_cast<float>(ball->getR()))/300) < (this->getUpLeftPos().getX() + this->width) &&
         (newPos.getX() - (static_cast<float>(ball->getR()))/300) > this->getUpLeftPos().getX())
     {
-        ball->setDirection(Point(ball->getDirection().getX(), -ball->getDirection().getY()));
-        return true;
+        if(ball->getDirection().getY() < 0){
+            ball->setDirection(Point(ball->getDirection().getX(), -ball->getDirection().getY()));
+            return true;
+        } else{
+            return false;
+        }
+    }
+
+    // Left side of block
+    if( (newPos.getX() + (static_cast<float>(ball->getR()))) > this->getUpLeftPos().getX() &&
+        (newPos.getX() - (static_cast<float>(ball->getR()))) < this->getUpLeftPos().getX() &&
+        (newPos.getY() + (static_cast<float>(ball->getR()))/300) < (this->getUpLeftPos().getY() + this->height) &&
+        (newPos.getY() - (static_cast<float>(ball->getR()))/300) > this->getUpLeftPos().getY())
+    {
+        if(ball->getDirection().getX() > 0){
+            ball->setDirection(Point(-ball->getDirection().getX(), ball->getDirection().getY()));
+            return true;
+        } else{
+            return false;
+        }
+    }
+
+    // Right side of block
+    if( (newPos.getX() - (static_cast<float>(ball->getR()))) < (this->getUpLeftPos().getX() + this->width) &&
+        (newPos.getX() + (static_cast<float>(ball->getR()))) > (this->getUpLeftPos().getX() + this->width) &&
+        (newPos.getY() + (static_cast<float>(ball->getR()))/300) < (this->getUpLeftPos().getY() + this->height) &&
+        (newPos.getY() - (static_cast<float>(ball->getR()))/300) > this->getUpLeftPos().getY())
+    {
+        if(ball->getDirection().getX() < 0){
+            ball->setDirection(Point(-ball->getDirection().getX(), ball->getDirection().getY()));
+            return true;
+        } else{
+            return false;
+        }
     }
 
     return false;
 
+}
+
+bool Block::getSpawnsBall() const
+{
+    return spawnsBall;
 }

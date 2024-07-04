@@ -1,9 +1,11 @@
 #include "../headers/gameModel.hpp"
 #include <iostream>
+#include <random>
 
 GameModel::GameModel(): balls(){
 
 	isGameOver = false;
+	isGameWon = false;
 	
 	screenPixelWidth = screenDims.screenWidth;
 	screenPixelHeight = screenDims.screenHeight;
@@ -28,12 +30,21 @@ GameModel::GameModel(): balls(){
 	// Create blocks
 	for(int j = 10; j < 15;j++)
 		for(int i = 0; i < (static_cast<int>(gamePixelWidth))/(Block::width + Block::margin); i++){
-			blocks.push_back(Block(Point(gameUpperLeft.getX() + i*Block::width + i*Block::margin,
+			if(rand()%13 != 0 && j!=10)
+				blocks.push_back(Block(Point(gameUpperLeft.getX() + i*Block::width + i*Block::margin,
 										gameUpperLeft.getY() + Block::height*j + Block::margin*j)));
+			else
+				blocks.push_back(Block(Point(gameUpperLeft.getX() + i*Block::width + i*Block::margin,
+										gameUpperLeft.getY() + Block::height*j + Block::margin*j), true));
 		}
 }
 
 void GameModel::update(){
+
+	if(blocks.size() == 0){
+		isGameWon = true;
+		return;
+	}
 
 	// Update Positions
 
@@ -70,6 +81,14 @@ int GameModel::getScreenPixelWidth(){
 	return this->screenPixelWidth;
 }
 
+bool GameModel::getIsGameOver(){
+	return this->isGameOver;
+}
+
+bool GameModel::getIsGameWon(){
+	return this->isGameWon;
+}
+
 void GameModel::drawBackGround(){
 
 	static Rectangle rec = {
@@ -100,7 +119,12 @@ bool GameModel::willCollide(Ball * ball, Point& newPos){
 	}
 	for(int i = 0; i < blocks.size(); i++){
 		if(blocks[i].ballCollision(ball, newPos)){
+			if(blocks[i].getSpawnsBall())
+				balls.push_back(
+					Ball(Point(blocks[i].getUpLeftPos().getX() + Block::width/2,
+							   blocks[i].getUpLeftPos().getY() + Block::height/2)));
 			blocks.erase(blocks.begin() + i);
+			return true;
 		}
 	}
 

@@ -20,6 +20,10 @@ float Point::getY(){
 	return this->y;
 }
 
+float Point::getXYFactor(){
+	return x/y;
+}
+
 Point Point::operator+(const Point& toAdd){
 	return Point(this->x + toAdd.x, this->y + toAdd.y);
 }

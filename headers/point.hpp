@@ -15,6 +15,8 @@ public:
 
 	void normalizeToOne();
 
+	float getXYFactor();
+
 	Point operator+(const Point& toAdd);
 	Point& operator+=(const Point& other);
 	Point operator*(float factor) const;
