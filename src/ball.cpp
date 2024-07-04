@@ -1,27 +1,17 @@
 #include "../headers/ball.hpp"
 #include "../headers/gameModel.hpp"
 #include <iostream>
+#include <random>
 
 float Ball::velocity = 100000.0f;
 
-Ball::Ball(Point p, bool initial): position(p) {
-	this->direction = Point(0.1f, 1.0f);
+Ball::Ball(Point p, bool initial): position(p), initial(initial) {
 	if(initial == true){
-		this->initial = true;
+		this->direction = Point(0.1f, 1.0f);
 	} else{
-		this->initial = false;
+		float xRand = (rand()%2000 - 1000)/1000.0f;
+		this->direction = Point(xRand, 1.0f);
 	}
-}
-
-Ball::Ball(float x, float y, bool initial) {
-	this->position = Point(x, y);
-	this->direction = Point(0.1f, 1.0f);
-	if(initial == true){
-		this->initial = true;
-	} else{
-		this->initial = false;
-	}
-
 }
 
 bool Ball::updatePosition(GameModel * gm){
@@ -65,13 +55,6 @@ Point Ball::getPos(){
 	return this->position;
 }
 
-Ball& Ball::operator=(const Ball& other) {
-    // Copy each member variable from `other` to `this`
-    this->position = other.position;
-    // Repeat for other member variables...
-
-    return *this; // Return a reference to the current instance
-}
 
 bool Ball::getInitial(){
 	return this->initial;

@@ -14,7 +14,7 @@ class Ball{
 	
 	Point direction;
 	Point position;
-	const int r = 5;
+	int r = 5;
 
 	public:
 	
@@ -32,8 +32,6 @@ class Ball{
 	int getR();
 
 	Point getPos();
-
-	Ball& operator=(const Ball& other);
 
 
 };

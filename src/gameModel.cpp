@@ -29,7 +29,7 @@ GameModel::GameModel(): balls(){
 							 gameUpperLeft.getY() + gamePixelHeight/2), true));
 
 	// Create blocks
-	for(int j = 10; j < 30;j++)
+	for(int j = 10; j < 35;j++)
 		for(int i = 0; i < (static_cast<int>(gamePixelWidth))/(Block::width + Block::margin); i++){
 			if(rand()%13 != 0 && j < 17)
 				blocks.push_back(Block(Point(gameUpperLeft.getX() + i*Block::width + i*Block::margin,
@@ -135,8 +135,8 @@ bool GameModel::willCollide(Ball * ball, Point& newPos){
 		if(blocks[i].ballCollision(ball, newPos)){
 			if(blocks[i].getSpawnsBall())
 				balls.push_back(
-					Ball(blocks[i].getUpLeftPos().getX() + Block::width/2,
-							   blocks[i].getUpLeftPos().getY() + Block::height, false));
+					Ball(Point(blocks[i].getUpLeftPos().getX() + Block::width/2,
+							   blocks[i].getUpLeftPos().getY() + Block::height+ball->getR()), false));
 			blocks.erase(blocks.begin() + i);
 			return true;
 		}
