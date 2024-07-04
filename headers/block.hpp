@@ -11,9 +11,9 @@ class Block{
         Color color;
     public:
 
-        static const int width = 15;
-        static const int height = 15;
-        static const int margin = 3;
+        static const int width = 8;
+        static const int height = 8;
+        static const int margin = 1;
 
         Block(Point upLeftPos, bool spawnsBall = false);
 

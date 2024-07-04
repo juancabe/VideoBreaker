@@ -1,6 +1,7 @@
 #include "../headers/gameModel.hpp"
 #include <iostream>
 #include <random>
+#include <algorithm>
 
 GameModel::GameModel(): balls(){
 
@@ -16,7 +17,7 @@ GameModel::GameModel(): balls(){
 	gameUpperLeft = Point((screenPixelWidth - gamePixelWidth)/2, 0);
 	gameDownRight = Point((screenPixelWidth - gamePixelWidth)/2 + gamePixelWidth, gamePixelHeight);
 	
-	FPS = 160;
+	FPS = 60;
 
 	// Create bar
 	bar = new Bar(ScreenCoords(screenDims.screenWidth/2-200/2, screenDims.screenHeight-40),
@@ -25,12 +26,12 @@ GameModel::GameModel(): balls(){
 	Ball::velocity = (5.0f*60)/this->FPS;
 	// Create start ball
 	balls.push_back(Ball(Point(gameUpperLeft.getX() + gamePixelWidth/2,
-							 gameUpperLeft.getY() + gamePixelHeight/2)));
+							 gameUpperLeft.getY() + gamePixelHeight/2), true));
 
 	// Create blocks
-	for(int j = 10; j < 15;j++)
+	for(int j = 10; j < 30;j++)
 		for(int i = 0; i < (static_cast<int>(gamePixelWidth))/(Block::width + Block::margin); i++){
-			if(rand()%13 != 0 && j!=10)
+			if(rand()%13 != 0 && j < 17)
 				blocks.push_back(Block(Point(gameUpperLeft.getX() + i*Block::width + i*Block::margin,
 										gameUpperLeft.getY() + Block::height*j + Block::margin*j)));
 			else
@@ -48,11 +49,24 @@ void GameModel::update(){
 
 	// Update Positions
 
+	std::vector<int> toDelete;
+
 	for(int i = 0; i < balls.size(); i++){
 		if(balls[i].updatePosition(this)){
-			balls.erase(balls.begin() + i);
+			toDelete.push_back(i);
 		}
 	}
+
+	// Print ball 0 getInitial
+	std::cout << "balls[0].getInitial() = " << balls[0].getInitial() << std::endl;
+	// Erease reduces vector size, so it should be taken into account
+		// first delete last element, then the second last, etc.
+		// when deleting the ith element, the i+1th element becomes the ith element
+	std::sort(toDelete.begin(), toDelete.end());
+	for(int i = 0; i < toDelete.size(); i++){
+		balls.erase(balls.begin() + toDelete[i] - i);
+	}
+
 	bar->updatePosition(this->gameUpperLeft, this->gameDownRight);
 	if(balls.size() == 0){
 		gameOver();
@@ -121,8 +135,8 @@ bool GameModel::willCollide(Ball * ball, Point& newPos){
 		if(blocks[i].ballCollision(ball, newPos)){
 			if(blocks[i].getSpawnsBall())
 				balls.push_back(
-					Ball(Point(blocks[i].getUpLeftPos().getX() + Block::width/2,
-							   blocks[i].getUpLeftPos().getY() + Block::height/2)));
+					Ball(blocks[i].getUpLeftPos().getX() + Block::width/2,
+							   blocks[i].getUpLeftPos().getY() + Block::height, false));
 			blocks.erase(blocks.begin() + i);
 			return true;
 		}

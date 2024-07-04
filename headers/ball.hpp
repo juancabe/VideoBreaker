@@ -10,6 +10,7 @@ class Ball{
 	
 	private:
 	
+	bool initial;
 	
 	Point direction;
 	Point position;
@@ -19,12 +20,14 @@ class Ball{
 	
 	static float velocity;
 
-	Ball(Point p);
+	Ball(Point p, bool initial = false);
+	Ball(float x, float y, bool initial = false);
 	bool updatePosition(GameModel * gm);
 	void draw();
 
 	Point getDirection();
 	void setDirection(Point direction);
+	bool getInitial();
 	
 	int getR();
 

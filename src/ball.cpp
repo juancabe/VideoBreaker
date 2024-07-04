@@ -4,10 +4,23 @@
 
 float Ball::velocity = 100000.0f;
 
-Ball::Ball(Point p)
-{
-	this->position = p;
+Ball::Ball(Point p, bool initial): position(p) {
 	this->direction = Point(0.1f, 1.0f);
+	if(initial == true){
+		this->initial = true;
+	} else{
+		this->initial = false;
+	}
+}
+
+Ball::Ball(float x, float y, bool initial) {
+	this->position = Point(x, y);
+	this->direction = Point(0.1f, 1.0f);
+	if(initial == true){
+		this->initial = true;
+	} else{
+		this->initial = false;
+	}
 
 }
 
@@ -32,7 +45,8 @@ void Ball::draw(){
 		DrawCircle(ghostBall.getX(), ghostBall.getY(), 2, WHITE);
 	}
 	*/
-	DrawCircle(position.getX(), position.getY(), this->r, RED);
+	DrawCircle(position.getX(), position.getY(), this->r, initial?RED:WHITE);
+
 }
 
 Point Ball::getDirection(){
@@ -57,4 +71,8 @@ Ball& Ball::operator=(const Ball& other) {
     // Repeat for other member variables...
 
     return *this; // Return a reference to the current instance
+}
+
+bool Ball::getInitial(){
+	return this->initial;
 }
