@@ -121,6 +121,11 @@ bool Bar::ballCollision(Ball * ball, Point& newPos)
 
     // Being down the bar...
 
+    if(newPos.getY() > (coords.getY() + pixelHeight/2.1f)){
+            ball->setDirection(Point(-ball->getDirection().getX(), 1));
+        return false;
+    }
+
     if(newPos.getX() > (coords.getX() + roundedRadious) &&
         newPos.getX() < (coords.getX() + pixelWidth - roundedRadious)) // Ball is at the plain surface of the bar
     {

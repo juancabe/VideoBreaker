@@ -20,13 +20,14 @@ int main(){
         BeginDrawing();
 
             ClearBackground(BLACK);
-            if(gm.getIsGameOver()){
+
+            if(gm.getIsGameOver()){ // Game Over Screen
                 DrawText("Game Over", gm.getScreenPixelWidth()/2 - 50, gm.getScreenPixelHeight()/2, 20, WHITE);
                 DrawText("Press Enter to restart", gm.getScreenPixelWidth()/2 - 100, gm.getScreenPixelHeight()/2 + 20, 20, WHITE);
                 if(IsKeyPressed(KEY_ENTER)){
                     gm = GameModel();
                 }
-            } else if(gm.getIsGameWon()){
+            } else if(gm.getIsGameWon()){ // Game Won Screen
                 DrawText("You Won", gm.getScreenPixelWidth()/2 - 50, gm.getScreenPixelHeight()/2, 20, WHITE);
                 DrawText("Press Enter to restart", gm.getScreenPixelWidth()/2 - 100, gm.getScreenPixelHeight()/2 + 20, 20, WHITE);
                 if(IsKeyPressed(KEY_ENTER)){
