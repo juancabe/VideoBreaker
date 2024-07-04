@@ -33,9 +33,11 @@ private:
 	bool isGameOver;
 	bool isGameWon;
 
+	void (*playPop)();
+
 public:
 
-	GameModel();
+	GameModel(void (*playPop)());
 	void update();
 	unsigned int getFPS();
 

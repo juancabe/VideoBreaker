@@ -3,7 +3,7 @@
 #include <random>
 #include <algorithm>
 
-GameModel::GameModel(): balls(){
+GameModel::GameModel(void (*playPop)()): balls(), playPop(playPop){
 
 	isGameOver = false;
 	isGameWon = false;
@@ -57,11 +57,6 @@ void GameModel::update(){
 		}
 	}
 
-	// Print ball 0 getInitial
-	std::cout << "balls[0].getInitial() = " << balls[0].getInitial() << std::endl;
-	// Erease reduces vector size, so it should be taken into account
-		// first delete last element, then the second last, etc.
-		// when deleting the ith element, the i+1th element becomes the ith element
 	std::sort(toDelete.begin(), toDelete.end());
 	for(int i = 0; i < toDelete.size(); i++){
 		balls.erase(balls.begin() + toDelete[i] - i);
@@ -138,6 +133,7 @@ bool GameModel::willCollide(Ball * ball, Point& newPos){
 					Ball(Point(blocks[i].getUpLeftPos().getX() + Block::width/2,
 							   blocks[i].getUpLeftPos().getY() + Block::height+ball->getR()), false));
 			blocks.erase(blocks.begin() + i);
+			playPop();
 			return true;
 		}
 	}
