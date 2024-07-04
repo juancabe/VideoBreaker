@@ -8,6 +8,7 @@ class Block{
     private:
         Point upLeftPos;
         bool spawnsBall;
+        Color color;
     public:
 
         static const int width = 15;

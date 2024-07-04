@@ -1,10 +1,15 @@
 #include "../headers/block.hpp"
 #include <iostream>
 #include <raylib.h>
+#include <random>
 
 Block::Block(Point upLeftPos, bool spawnsBall)
     : upLeftPos(upLeftPos), spawnsBall(spawnsBall)
 {
+    this->color.a = 255;
+    this->color.r = rand()%199 + 28;
+    this->color.g = rand()%199 + 28;
+    this->color.b = rand()%199 + 28;
 }
 
 Point Block::getUpLeftPos() const
@@ -25,10 +30,18 @@ void Block::draw()
         width,
         height
     };
-    DrawRectangleRec(rec, RED);
+    DrawRectangleRec(rec, this->color);
+
+    unsigned char c255 = static_cast<unsigned char>('\255');
+
     if(spawnsBall){
         DrawCircle(upLeftPos.getX() + static_cast<float>(width)/2, upLeftPos.getY() + static_cast<float>(height)/2,
-                    static_cast<float>(width)/4, WHITE);
+                    static_cast<float>(width)/4,{
+                        static_cast<unsigned char>(c255 - this->color.r),
+                        static_cast<unsigned char>(c255 - this->color.g),
+                        static_cast<unsigned char>(c255 - this->color.b),
+                        this->color.a,
+                    });
     }
 }
 
