@@ -1,19 +1,27 @@
 #include <raylib.h>
 #include <iostream>
 #include <string>
+#include "menu.cpp"
 #include "../headers/bar.hpp"
 #include "../headers/coords.hpp"
 #include "../headers/gameModel.hpp"
 
 Sound pop;
 
-void gameOverScreen(GameModel& gm);
-void gameWonScreen(GameModel& gm);
 void playPop();
 
 int main(){
 
-    GameModel gm = GameModel(&playPop);
+    menuSelector ms = menuScreen();
+
+    for(int i = 0; i < ms.levels; i++){
+        if(ms.levelsSelected[i]){
+            std::cout << "Level " << i << " selected" << std::endl;
+        }
+    }
+    std::cout<< "FPS: " << ms.fps << std::endl;
+
+    GameModel gm = GameModel(&playPop, ms.fps, ms.levels, ms.levelsSelected);
     InitWindow(gm.getScreenPixelWidth(), gm.getScreenPixelHeight(), "VideoBreaker");
     InitAudioDevice();
     pop = LoadSound("resources/audio/pop.wav");
@@ -32,9 +40,9 @@ int main(){
             ClearBackground(BLACK);
 
             if(gm.getIsGameOver())
-                gameOverScreen(gm);
+                gameOverScreen(gm, &playPop, ms);
             else if(gm.getIsGameWon())
-                gameWonScreen(gm);
+                gameWonScreen(gm, &playPop, ms);
             else
                 gm.update();
             
@@ -52,19 +60,3 @@ void playPop(){
     PlaySound(pop);
 }
 
-void gameWonScreen(GameModel& gm)
-{
-    DrawText("You Won", gm.getScreenPixelWidth()/2 - 50, gm.getScreenPixelHeight()/2, 20, WHITE);
-    DrawText("Press Enter to restart", gm.getScreenPixelWidth()/2 - 100, gm.getScreenPixelHeight()/2 + 20, 20, WHITE);
-    if(IsKeyPressed(KEY_ENTER)){
-        gm = GameModel(&playPop);
-    }
-}
-
-void gameOverScreen(GameModel& gm){
-    DrawText("Game Over", gm.getScreenPixelWidth()/2 - 50, gm.getScreenPixelHeight()/2, 20, WHITE);
-    DrawText("Press Enter to restart", gm.getScreenPixelWidth()/2 - 100, gm.getScreenPixelHeight()/2 + 20, 20, WHITE);
-    if(IsKeyPressed(KEY_ENTER)){
-        gm = GameModel(&playPop);
-    }
-}

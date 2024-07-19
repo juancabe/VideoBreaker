@@ -11,10 +11,13 @@ class Block{
         Color color;
     public:
 
-        static const int width = 8;
-        static const int height = 8;
+        static const int width = 7;
+        static const int height = 7;
         static const int margin = 1;
 
+        ~Block(){
+            
+        }
         Block(Point upLeftPos, bool spawnsBall = false);
 
         Point getUpLeftPos() const;

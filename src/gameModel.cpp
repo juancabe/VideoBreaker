@@ -3,7 +3,7 @@
 #include <random>
 #include <algorithm>
 
-GameModel::GameModel(void (*playPop)()): balls(), playPop(playPop){
+GameModel::GameModel(void (*playPop)(), unsigned int FPS, int numLevels, bool * levelsSelected): balls(), playPop(playPop){
 
 	isGameOver = false;
 	isGameWon = false;
@@ -17,7 +17,7 @@ GameModel::GameModel(void (*playPop)()): balls(), playPop(playPop){
 	gameUpperLeft = Point((screenPixelWidth - gamePixelWidth)/2, 0);
 	gameDownRight = Point((screenPixelWidth - gamePixelWidth)/2 + gamePixelWidth, gamePixelHeight);
 	
-	FPS = 60;
+	this->FPS = FPS;
 
 	// Create bar
 	bar = new Bar(ScreenCoords(screenDims.screenWidth/2-200/2, screenDims.screenHeight-40),
@@ -29,9 +29,9 @@ GameModel::GameModel(void (*playPop)()): balls(), playPop(playPop){
 							 gameUpperLeft.getY() + gamePixelHeight/2), true));
 
 	// Create blocks
-	for(int j = 10; j < 35;j++)
+	for(int j = 10; j < 30;j++)
 		for(int i = 0; i < (static_cast<int>(gamePixelWidth))/(Block::width + Block::margin); i++){
-			if(rand()%13 != 0 && j < 17)
+			if(rand()%13 != 0 && j > 28)
 				blocks.push_back(Block(Point(gameUpperLeft.getX() + i*Block::width + i*Block::margin,
 										gameUpperLeft.getY() + Block::height*j + Block::margin*j)));
 			else
@@ -39,6 +39,7 @@ GameModel::GameModel(void (*playPop)()): balls(), playPop(playPop){
 										gameUpperLeft.getY() + Block::height*j + Block::margin*j), true));
 		}
 }
+
 
 void GameModel::update(){
 
@@ -141,6 +142,7 @@ bool GameModel::willCollide(Ball * ball, Point& newPos){
 	if(bar->ballCollision(ball, newPos)){ // colliding with bar
 		return true;
 	}
+
 	/*
 	if(newPos.getY() + ball->getR() > this->gameDownRight.getY()){ // Colliding with bottom wall
 		ball->setDirection(Point(ball->getDirection().getX(), -ball->getDirection().getY()));

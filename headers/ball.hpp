@@ -20,6 +20,10 @@ class Ball{
 	
 	static float velocity;
 
+	~Ball(){
+		
+	}
+
 	Ball(Point p, bool initial = false);
 	Ball(float x, float y, bool initial = false);
 	bool updatePosition(GameModel * gm);

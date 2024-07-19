@@ -37,7 +37,7 @@ private:
 
 public:
 
-	GameModel(void (*playPop)());
+	GameModel(void (*playPop)(), unsigned int FPS, int numLevels, bool * levelsSelected);
 	void update();
 	unsigned int getFPS();
 
