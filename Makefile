@@ -1,10 +1,10 @@
 RAYLIBDEPS = -lraylib -lGL -lm -lpthread -ldl -lrt -lX11
 
 main: src/main.cpp src/menu.cpp objects/gameModel.o
-	g++ src/main.cpp objects/bar.o objects/coords.o objects/gameModel.o objects/point.o objects/ball.o objects/block.o -o main $(RAYLIBDEPS)
+	g++ src/main.cpp objects/bar.o objects/coords.o objects/gameModel.o objects/point.o objects/ball.o objects/block.o objects/ppm.o -o main $(RAYLIBDEPS)
 
-objects/gameModel.o: headers/gameModel.hpp src/gameModel.cpp objects/bar.o objects/point.o objects/ball.o objects/block.o
-	g++ -c src/gameModel.cpp -o objects/gameModel.o
+objects/gameModel.o: headers/gameModel.hpp src/gameModel.cpp objects/bar.o objects/point.o objects/ball.o objects/block.o objects/ppm.o
+	g++ -c src/gameModel.cpp -o objects/gameModel.o objects/block.o
 
 objects/bar.o: src/bar.cpp headers/bar.hpp objects/coords.o objects/point.o
 	g++ -c src/bar.cpp -o objects/bar.o $(RAYLIBDEPS)

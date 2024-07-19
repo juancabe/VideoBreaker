@@ -3,6 +3,9 @@
 #include <raylib.h>
 #include <random>
 
+int Block::width;
+int Block::height;
+
 Block::Block(Point upLeftPos, bool spawnsBall)
     : upLeftPos(upLeftPos), spawnsBall(spawnsBall)
 {

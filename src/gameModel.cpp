@@ -29,6 +29,28 @@ GameModel::GameModel(void (*playPop)(), unsigned int FPS, int numLevels, bool * 
 							 gameUpperLeft.getY() + gamePixelHeight/2), true));
 
 	// Create blocks
+
+	ppm pixels = ppm("levels/level0.ppm");
+	unsigned char ** pixelsMem = pixels.getPixels();
+
+	Block::width = static_cast<int>(gamePixelWidth)/pixels.getWidth();
+	Block::height = Block::width;
+
+	for(int i = 0; i < pixels.getHeight(); i++){
+		for(int j = 0; j < pixels.getWidth()*3; j += 3){
+			if(pixelsMem[i][j] == 255 && pixelsMem[i][j+1] == 255 && pixelsMem[i][j+2] == 255){
+				continue;
+			} else if(pixelsMem[i][j] == 0 && pixelsMem[i][j+1] == 0 && pixelsMem[i][j+2] == 0){
+				blocks.push_back(Block(Point(gameUpperLeft.getX() + j/3*Block::width + j/3*Block::margin,
+										gameUpperLeft.getY() + Block::height*i + Block::margin*i)));
+			} else {
+				blocks.push_back(Block(Point(gameUpperLeft.getX() + j/3*Block::width + j/3*Block::margin,
+										gameUpperLeft.getY() + Block::height*i + Block::margin*i), true));
+			}
+		}
+	}
+
+	/*
 	for(int j = 10; j < 30;j++)
 		for(int i = 0; i < (static_cast<int>(gamePixelWidth))/(Block::width + Block::margin); i++){
 			if(rand()%13 != 0 && j > 28)
@@ -38,6 +60,8 @@ GameModel::GameModel(void (*playPop)(), unsigned int FPS, int numLevels, bool * 
 				blocks.push_back(Block(Point(gameUpperLeft.getX() + i*Block::width + i*Block::margin,
 										gameUpperLeft.getY() + Block::height*j + Block::margin*j), true));
 		}
+	*/
+
 }
 
 

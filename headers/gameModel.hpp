@@ -7,6 +7,7 @@
 #include "ball.hpp"
 #include "point.hpp"
 #include "block.hpp"
+#include "ppm.hpp"
 
 
 class GameModel{

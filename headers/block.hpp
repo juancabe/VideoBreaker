@@ -11,8 +11,8 @@ class Block{
         Color color;
     public:
 
-        static const int width = 7;
-        static const int height = 7;
+        static int width;
+        static int height;
         static const int margin = 1;
 
         ~Block(){

@@ -86,6 +86,10 @@ int ppm::getMaxColor()
 	return maxColor;
 }
 
+unsigned char **ppm::getPixels()
+{
+	return pixels;
+}
 
 void ppm::draw()
 {

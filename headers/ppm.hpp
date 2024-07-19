@@ -18,6 +18,7 @@ public:
 	int getWidth();
 	int getHeight();
 	int getMaxColor();
+	unsigned char **getPixels();
 
 	void draw();
 };
