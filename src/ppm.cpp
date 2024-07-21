@@ -3,7 +3,7 @@
 #include <fstream>
 #include <iostream>
 
-ppm::ppm(char filename[])
+ppm::ppm(const char filename[])
 {
 	std::ifstream file(filename);
 	if (!file)

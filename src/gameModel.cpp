@@ -3,10 +3,52 @@
 #include <random>
 #include <algorithm>
 
-GameModel::GameModel(void (*playPop)(), unsigned int FPS, int numLevels, bool * levelsSelected): balls(), playPop(playPop){
+void GameModel::loadLevel(int level){
+	ppm pixels = ppm(("levels/level" + std::to_string(level) + ".ppm").c_str());
+	unsigned char ** pixelsMem = pixels.getPixels();
+
+	Block::width = gamePixelWidth/pixels.getWidth() - Block::margin;
+	Block::height = Block::width;
+
+	for(int i = 0; i < pixels.getHeight(); i++){
+		for(int j = 0; j < pixels.getWidth()*3; j += 3){
+			if(pixelsMem[i][j] == 255 && pixelsMem[i][j+1] == 255 && pixelsMem[i][j+2] == 255){
+				continue;
+			} else if(pixelsMem[i][j] == 0 && pixelsMem[i][j+1] == 0 && pixelsMem[i][j+2] == 0){
+				blocks.push_back(Block(Point(gameUpperLeft.getX() + j/3*Block::width + j/3*Block::margin,
+										gameUpperLeft.getY() + Block::height*i + Block::margin*i)));
+			} else {
+				blocks.push_back(Block(Point(gameUpperLeft.getX() + j/3*Block::width + j/3*Block::margin,
+										gameUpperLeft.getY() + Block::height*i + Block::margin*i), true));
+			}
+		}
+	}
+}
+
+GameModel::GameModel(void (*playPop)(), unsigned int FPS, int numLevels, bool * levelsSelected):
+balls(), playPop(playPop), FPS(FPS), blocks()
+{
+
+
+	actualLevel = -1;
+	this->numLevels = numLevels;
+	this->levelsSelected = new bool[numLevels];
+
+	for(int i = numLevels - 1; i >= 0; i--){
+		this->levelsSelected[i] = levelsSelected[i];
+		if(levelsSelected[i]){
+			actualLevel = i;
+		}
+	}
+
 
 	isGameOver = false;
-	isGameWon = false;
+	if(actualLevel == -1){
+		isGameWon = true;
+		return;
+	}
+	else
+		isGameWon = false;
 	
 	screenPixelWidth = screenDims.screenWidth;
 	screenPixelHeight = screenDims.screenHeight;
@@ -30,44 +72,23 @@ GameModel::GameModel(void (*playPop)(), unsigned int FPS, int numLevels, bool * 
 
 	// Create blocks
 
-	ppm pixels = ppm("levels/level0.ppm");
-	unsigned char ** pixelsMem = pixels.getPixels();
-
-	Block::width = static_cast<int>(gamePixelWidth)/pixels.getWidth();
-	Block::height = Block::width;
-
-	for(int i = 0; i < pixels.getHeight(); i++){
-		for(int j = 0; j < pixels.getWidth()*3; j += 3){
-			if(pixelsMem[i][j] == 255 && pixelsMem[i][j+1] == 255 && pixelsMem[i][j+2] == 255){
-				continue;
-			} else if(pixelsMem[i][j] == 0 && pixelsMem[i][j+1] == 0 && pixelsMem[i][j+2] == 0){
-				blocks.push_back(Block(Point(gameUpperLeft.getX() + j/3*Block::width + j/3*Block::margin,
-										gameUpperLeft.getY() + Block::height*i + Block::margin*i)));
-			} else {
-				blocks.push_back(Block(Point(gameUpperLeft.getX() + j/3*Block::width + j/3*Block::margin,
-										gameUpperLeft.getY() + Block::height*i + Block::margin*i), true));
-			}
-		}
-	}
-
-	/*
-	for(int j = 10; j < 30;j++)
-		for(int i = 0; i < (static_cast<int>(gamePixelWidth))/(Block::width + Block::margin); i++){
-			if(rand()%13 != 0 && j > 28)
-				blocks.push_back(Block(Point(gameUpperLeft.getX() + i*Block::width + i*Block::margin,
-										gameUpperLeft.getY() + Block::height*j + Block::margin*j)));
-			else
-				blocks.push_back(Block(Point(gameUpperLeft.getX() + i*Block::width + i*Block::margin,
-										gameUpperLeft.getY() + Block::height*j + Block::margin*j), true));
-		}
-	*/
+	loadLevel(actualLevel);
 
 }
 
 
 void GameModel::update(){
 
+
 	if(blocks.size() == 0){
+		for(int i = actualLevel + 1; i < numLevels; i++){
+			if(levelsSelected[i]){
+				actualLevel = i;
+				loadLevel(actualLevel);
+				return;
+			}
+		}
+
 		isGameWon = true;
 		return;
 	}

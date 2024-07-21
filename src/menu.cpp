@@ -32,7 +32,7 @@ menuSelector menuScreen(){
 
 	for(int i = 0; i < levels; i++){
 		levelsSelected[i] = false;
-	}
+	} levelsSelected[0]	= true;
 
 	InitWindow(menuWidth, menuHeight, "VideoBreaker");
 	SetTargetFPS(60);

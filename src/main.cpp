@@ -22,9 +22,13 @@ int main(){
     std::cout<< "FPS: " << ms.fps << std::endl;
 
     GameModel gm = GameModel(&playPop, ms.fps, ms.levels, ms.levelsSelected);
-    InitWindow(gm.getScreenPixelWidth(), gm.getScreenPixelHeight(), "VideoBreaker");
-    InitAudioDevice();
-    pop = LoadSound("resources/audio/pop.wav");
+    if(!gm.getIsGameWon()){
+        InitWindow(gm.getScreenPixelWidth(), gm.getScreenPixelHeight(), "VideoBreaker");
+        InitAudioDevice();
+        pop = LoadSound("resources/audio/pop.wav");
+    } else{
+        InitWindow(800, 600, "VideoBreaker");
+    }
     
     SetSoundVolume(pop, 0.1f);
 

@@ -17,6 +17,9 @@ private:
 
 	unsigned int FPS;
 
+	int actualLevel;
+	int numLevels;
+	bool * levelsSelected;
 	
 	int screenPixelWidth;
 	int screenPixelHeight;
@@ -30,6 +33,9 @@ private:
     std::vector<Block> blocks;
 
 	void drawBackGround();
+	void loadLevel(int level);
+
+
 	void gameOver();
 	bool isGameOver;
 	bool isGameWon;

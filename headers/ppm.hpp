@@ -12,7 +12,7 @@ private:
 	unsigned char **pixels; // Max maxColor is 256
 
 public:
-	ppm(char filename[]);
+	ppm(const char filename[]);
 	~ppm();
 
 	int getWidth();
