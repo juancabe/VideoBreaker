@@ -245,7 +245,7 @@ menuSelector gameWonScreen(GameModel& gm, void (*playPop)())
         gm = GameModel(playPop, ms.fps, ms.levels, ms.levelsSelected);
 		if(!gm.getIsGameWon()){
 			InitWindow(gm.getScreenPixelWidth(), gm.getScreenPixelHeight(), "VideoBreaker");
-			InitAudioDevice();
+			SetTargetFPS(gm.getFPS());
 		} else{
 			InitWindow(800, 600, "VideoBreaker");
 		}

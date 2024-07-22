@@ -23,16 +23,6 @@ balls(), playPop(playPop), FPS(FPS), blocks()
 			actualLevel = i;
 		}
 	}
-
-
-	isGameOver = false;
-	if(actualLevel == -1){
-		isGameWon = true;
-		return;
-	}
-	else
-		isGameWon = false;
-	
 	screenPixelWidth = screenDims.screenWidth;
 	screenPixelHeight = screenDims.screenHeight;
 	
@@ -43,6 +33,16 @@ balls(), playPop(playPop), FPS(FPS), blocks()
 	gameDownRight = Point((screenPixelWidth - gamePixelWidth)/2 + gamePixelWidth, gamePixelHeight);
 	
 	this->FPS = FPS;
+
+
+	isGameOver = false;
+	if(actualLevel == -1){
+		isGameWon = true;
+		return;
+	}
+	else
+		isGameWon = false;
+	
 
 	// Create bar
 	bar = new Bar(ScreenCoords(screenDims.screenWidth/2-200/2, screenDims.screenHeight-40),

@@ -1,4 +1,4 @@
-RAYLIBDEPS = -lraylib -lGL -lm -lpthread -ldl -lrt -lX11
+RAYLIBDEPS = -lraylib -lm -lpthread -ldl -lrt -lX11
 
 main: src/main.cpp src/menu.cpp objects/gameModel.o
 	g++ src/main.cpp objects/bar.o objects/coords.o objects/gameModel.o objects/point.o objects/ball.o objects/block.o objects/ppm.o -o main $(RAYLIBDEPS)
@@ -23,3 +23,6 @@ objects/block.o: src/block.cpp headers/block.hpp objects/point.o
 
 objects/ppm.o: src/ppm.cpp headers/ppm.hpp
 	g++ -c src/ppm.cpp -o objects/ppm.o $(RAYLIBDEPS)
+
+static: src/main.cpp src/menu.cpp objects/gameModel.o
+	g++ src/main.cpp objects/bar.o objects/coords.o objects/gameModel.o objects/point.o objects/ball.o objects/block.o objects/ppm.o -o main $(RAYLIBDEPS) -static
