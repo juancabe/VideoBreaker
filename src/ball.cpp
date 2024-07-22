@@ -28,13 +28,7 @@ bool Ball::updatePosition(GameModel * gm){
 }
 
 void Ball::draw(){
-	/*
-	Point ghostBall(this->position);
-	for(int i = 0; i < 100; i++){
-		ghostBall += (this->direction*10.0f);
-		DrawCircle(ghostBall.getX(), ghostBall.getY(), 2, WHITE);
-	}
-	*/
+
 	DrawCircle(position.getX(), position.getY(), this->r, initial?RED:WHITE);
 
 }

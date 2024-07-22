@@ -5,6 +5,7 @@
 
 ppm::ppm(const char filename[])
 {
+	pixels = nullptr;
 	std::ifstream file(filename);
 	if (!file)
 	{
@@ -26,9 +27,9 @@ ppm::ppm(const char filename[])
 	if (c == '#')
 	{
 		std::getline(file, format);
-		std::cout << "Comment: " << format << std::endl;
 	} else{
 		std::cout << "No comment" << std::endl;
+		file.putback(c);
 	}
 	
 	// Max maxColor is 256
@@ -56,7 +57,7 @@ ppm::ppm(const char filename[])
 		}
 	}
 
-	std::cout << "File read successfully" << std::endl;
+	// std::cout << "File read successfully" << std::endl;
 
 	file.close();
 }

@@ -14,13 +14,6 @@ int main(){
 
     menuSelector ms = menuScreen();
 
-    for(int i = 0; i < ms.levels; i++){
-        if(ms.levelsSelected[i]){
-            std::cout << "Level " << i << " selected" << std::endl;
-        }
-    }
-    std::cout<< "FPS: " << ms.fps << std::endl;
-
     GameModel gm = GameModel(&playPop, ms.fps, ms.levels, ms.levelsSelected);
     if(!gm.getIsGameWon()){
         InitWindow(gm.getScreenPixelWidth(), gm.getScreenPixelHeight(), "VideoBreaker");
@@ -45,8 +38,13 @@ int main(){
 
             if(gm.getIsGameOver())
                 gameOverScreen(gm, &playPop, ms);
-            else if(gm.getIsGameWon())
-                gameWonScreen(gm, &playPop, ms);
+            else if(gm.getIsGameWon()){
+                ms = gameWonScreen(gm, &playPop);
+                if(ms.levelsSelected){
+                    //pop = LoadSound("resources/audio/pop.wav");
+                    BeginDrawing();
+                }
+            }
             else
                 gm.update();
             

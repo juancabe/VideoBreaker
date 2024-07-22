@@ -3,32 +3,15 @@
 #include <random>
 #include <algorithm>
 
-void GameModel::loadLevel(int level){
-	ppm pixels = ppm(("levels/level" + std::to_string(level) + ".ppm").c_str());
-	unsigned char ** pixelsMem = pixels.getPixels();
-
-	Block::width = gamePixelWidth/pixels.getWidth() - Block::margin;
-	Block::height = Block::width;
-
-	for(int i = 0; i < pixels.getHeight(); i++){
-		for(int j = 0; j < pixels.getWidth()*3; j += 3){
-			if(pixelsMem[i][j] == 255 && pixelsMem[i][j+1] == 255 && pixelsMem[i][j+2] == 255){
-				continue;
-			} else if(pixelsMem[i][j] == 0 && pixelsMem[i][j+1] == 0 && pixelsMem[i][j+2] == 0){
-				blocks.push_back(Block(Point(gameUpperLeft.getX() + j/3*Block::width + j/3*Block::margin,
-										gameUpperLeft.getY() + Block::height*i + Block::margin*i)));
-			} else {
-				blocks.push_back(Block(Point(gameUpperLeft.getX() + j/3*Block::width + j/3*Block::margin,
-										gameUpperLeft.getY() + Block::height*i + Block::margin*i), true));
-			}
-		}
-	}
+GameModel::~GameModel(){
+	balls.clear();
+	blocks.clear();
 }
+
 
 GameModel::GameModel(void (*playPop)(), unsigned int FPS, int numLevels, bool * levelsSelected):
 balls(), playPop(playPop), FPS(FPS), blocks()
 {
-
 
 	actualLevel = -1;
 	this->numLevels = numLevels;
@@ -76,6 +59,27 @@ balls(), playPop(playPop), FPS(FPS), blocks()
 
 }
 
+void GameModel::loadLevel(int level){
+	ppm pixels = ppm(("levels/level" + std::to_string(level) + ".ppm").c_str());
+	unsigned char ** pixelsMem = pixels.getPixels();
+
+	Block::width = gamePixelWidth/pixels.getWidth() - Block::margin;
+	Block::height = Block::width;
+
+	for(int i = 0; i < pixels.getHeight(); i++){
+		for(int j = 0; j < pixels.getWidth()*3; j += 3){
+			if(pixelsMem[i][j] == 255 && pixelsMem[i][j+1] == 255 && pixelsMem[i][j+2] == 255){
+				continue;
+			} else if(pixelsMem[i][j] == 0 && pixelsMem[i][j+1] == 0 && pixelsMem[i][j+2] == 0){
+				blocks.push_back(Block(Point(gameUpperLeft.getX() + j/3*Block::width + j/3*Block::margin,
+										gameUpperLeft.getY() + Block::height*i + Block::margin*i)));
+			} else {
+				blocks.push_back(Block(Point(gameUpperLeft.getX() + j/3*Block::width + j/3*Block::margin,
+										gameUpperLeft.getY() + Block::height*i + Block::margin*i), true));
+			}
+		}
+	}
+}
 
 void GameModel::update(){
 
@@ -85,6 +89,10 @@ void GameModel::update(){
 			if(levelsSelected[i]){
 				actualLevel = i;
 				loadLevel(actualLevel);
+				// Empty balls vector
+				balls.clear();
+				balls.push_back(Ball(Point(gameUpperLeft.getX() + gamePixelWidth/2,
+							 gameUpperLeft.getY() + gamePixelHeight/2), true));
 				return;
 			}
 		}

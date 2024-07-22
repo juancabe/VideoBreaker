@@ -32,7 +32,7 @@ menuSelector menuScreen(){
 
 	for(int i = 0; i < levels; i++){
 		levelsSelected[i] = false;
-	} levelsSelected[0]	= true;
+	} levelsSelected[3]	= true;
 
 	InitWindow(menuWidth, menuHeight, "VideoBreaker");
 	SetTargetFPS(60);
@@ -234,13 +234,25 @@ int numberOfLevels(){
 	}		
 }
 
-void gameWonScreen(GameModel& gm, void (*playPop)(), menuSelector ms)
+menuSelector gameWonScreen(GameModel& gm, void (*playPop)())
 {
     DrawText("You Won", gm.getScreenPixelWidth()/2 - 50, gm.getScreenPixelHeight()/2, 20, WHITE);
     DrawText("Press Enter to restart", gm.getScreenPixelWidth()/2 - 100, gm.getScreenPixelHeight()/2 + 20, 20, WHITE);
     if(IsKeyPressed(KEY_ENTER)){
+		EndDrawing();
+		CloseWindow();
+		menuSelector ms = menuScreen();
         gm = GameModel(playPop, ms.fps, ms.levels, ms.levelsSelected);
+		if(!gm.getIsGameWon()){
+			InitWindow(gm.getScreenPixelWidth(), gm.getScreenPixelHeight(), "VideoBreaker");
+			InitAudioDevice();
+		} else{
+			InitWindow(800, 600, "VideoBreaker");
+		}
+		
+		return ms;
     }
+	return menuSelector{nullptr, 0, 0};
 }
 
 void gameOverScreen(GameModel& gm, void (*playPop)(), menuSelector ms){
