@@ -131,7 +131,8 @@ bool Bar::ballCollision(Ball * ball, Point& newPos)
         return true;
     }
     // Ball is at the rounded surface of the bar
-    if(newPos.getX() > coords.getX() && newPos.getX() <= (coords.getX() + roundedRadious)) // left one
+    if(newPos.getX() > coords.getX() &&
+       newPos.getX() <= (coords.getX() + roundedRadious)) // left one
     {   
         float d = coords.getX() + static_cast<float>(roundedRadious) - (newPos.getX() + ball->getR()*(newPos.getX()/coords.getX())); // distance between surface +- of ball x and circle x
         float h = sin(acos(d/roundedRadious))*roundedRadious; // y distance between ball surface and center of (circle of bar)
@@ -150,7 +151,7 @@ bool Bar::ballCollision(Ball * ball, Point& newPos)
         }
     }
     if((newPos.getX() < (coords.getX() + pixelWidth)) &&
-        newPos.getX() > coords.getX() + pixelWidth - roundedRadious){ // right one
+        newPos.getX() >= coords.getX() + pixelWidth - roundedRadious){ // right one
         float d = (newPos.getX() - ball->getR()*(newPos.getX()/coords.getX())) - (coords.getX() + pixelWidth - roundedRadious); // distance between surface +- of ball x and circle x
         float h = sin(acos(d/roundedRadious))*roundedRadious; // y distance between ball surface and center of (circle of bar)
         float dh = roundedRadious - h;
